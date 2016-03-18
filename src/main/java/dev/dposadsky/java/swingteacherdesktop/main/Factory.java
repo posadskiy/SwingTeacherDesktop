@@ -8,13 +8,17 @@ package dev.dposadsky.java.swingteacherdesktop.main;
 import dev.dposadsky.java.swingteacherdesktop.dao.CompletedTaskDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.DocumentationDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.ErrorDao;
+import dev.dposadsky.java.swingteacherdesktop.dao.KeywordDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.LessonDao;
+import dev.dposadsky.java.swingteacherdesktop.dao.ShorthandDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.TaskDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.UserDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.CompletedTaskDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.DocumentationDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.ErrorDaoImpl;
+import dev.dposadsky.java.swingteacherdesktop.dao.impl.KeywordDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.LessonDaoImpl;
+import dev.dposadsky.java.swingteacherdesktop.dao.impl.ShorthandDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.TaskDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.UserDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.tables.User;
@@ -27,9 +31,11 @@ public class Factory {
     
     public static Factory instance = new Factory();
     public LessonDao lessonDao;
+    public ShorthandDao shorthandDao;
     public TaskDao taskDao;
     public DocumentationDao documentationDao;
     public ErrorDao errorDao;
+    public KeywordDao keywordDao;
     public UserDao userDao;
     public CompletedTaskDao completedTaskDao;
     
@@ -45,6 +51,12 @@ public class Factory {
         if (lessonDao == null) 
             lessonDao = new LessonDaoImpl();
         return lessonDao;
+    }
+    
+    public ShorthandDao getShorthandDao() {
+        if (shorthandDao == null) 
+            shorthandDao = new ShorthandDaoImpl();
+        return shorthandDao;
     }
     
     public TaskDao getTaskDao() {
@@ -63,6 +75,12 @@ public class Factory {
         if (errorDao == null) 
             errorDao = new ErrorDaoImpl();
         return errorDao;
+    }
+    
+    public KeywordDao getKeywordDao() {
+        if (keywordDao == null) 
+            keywordDao = new KeywordDaoImpl();
+        return keywordDao;
     }
     
     public UserDao getUserDao() {

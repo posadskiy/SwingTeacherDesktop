@@ -374,7 +374,7 @@ public class MainFrameView extends JFrame {
         textArea.setBorder(tBorder);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA); 
         
-        CompletionProvider provider = createCompletionProvider();
+        CompletionProvider provider = controller.createCompletionProvider();
         AutoCompletion ac = new AutoCompletion(provider);
         ac.install(textArea);
         
@@ -433,33 +433,6 @@ public class MainFrameView extends JFrame {
     public void componentResized(ComponentEvent event) {
         System.out.println("111");
     }
-    
-    private CompletionProvider createCompletionProvider() {
-
-      DefaultCompletionProvider provider = new DefaultCompletionProvider();
-
-      // Add completions for all Java keywords. A BasicCompletion is just
-      // a straightforward word completion.
-      provider.addCompletion(new BasicCompletion(provider, "abstract"));
-      provider.addCompletion(new BasicCompletion(provider, "assert"));
-      provider.addCompletion(new BasicCompletion(provider, "break"));
-      provider.addCompletion(new BasicCompletion(provider, "case"));
-      provider.addCompletion(new BasicCompletion(provider, "transient"));
-      provider.addCompletion(new BasicCompletion(provider, "try"));
-      provider.addCompletion(new BasicCompletion(provider, "void"));
-      provider.addCompletion(new BasicCompletion(provider, "volatile"));
-      provider.addCompletion(new BasicCompletion(provider, "while"));
-
-      // Add a couple of "shorthand" completions. These completions don't
-      // require the input text to be the same thing as the replacement text.
-      provider.addCompletion(new ShorthandCompletion(provider, "sout",
-            "System.out.println(", "System.out.println("));
-      provider.addCompletion(new ShorthandCompletion(provider, "serr",
-            "System.err.println(", "System.err.println("));
-
-      return provider;
-
-   }
     
     public void setUser(User user) {
         this.currentUser = user;

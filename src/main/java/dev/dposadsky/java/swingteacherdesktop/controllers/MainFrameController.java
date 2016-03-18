@@ -8,13 +8,17 @@ package dev.dposadsky.java.swingteacherdesktop.controllers;
 import dev.dposadsky.java.swingteacherdesktop.dao.CompletedTaskDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.DocumentationDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.ErrorDao;
+import dev.dposadsky.java.swingteacherdesktop.dao.KeywordDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.LessonDao;
+import dev.dposadsky.java.swingteacherdesktop.dao.ShorthandDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.TaskDao;
 import dev.dposadsky.java.swingteacherdesktop.main.Checker;
 import dev.dposadsky.java.swingteacherdesktop.main.Factory;
 import dev.dposadsky.java.swingteacherdesktop.tables.CompletedTask;
 import dev.dposadsky.java.swingteacherdesktop.tables.Documentation;
+import dev.dposadsky.java.swingteacherdesktop.tables.Keyword;
 import dev.dposadsky.java.swingteacherdesktop.tables.Lesson;
+import dev.dposadsky.java.swingteacherdesktop.tables.Shorthand;
 import dev.dposadsky.java.swingteacherdesktop.tables.Task;
 import dev.dposadsky.java.swingteacherdesktop.tables.User;
 import dev.dposadsky.java.swingteacherdesktop.utils.CheckerResult;
@@ -27,6 +31,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import org.fife.ui.autocomplete.BasicCompletion;
+import org.fife.ui.autocomplete.CompletionProvider;
+import org.fife.ui.autocomplete.DefaultCompletionProvider;
+import org.fife.ui.autocomplete.ShorthandCompletion;
 
 /**
  *
@@ -37,9 +45,11 @@ public class MainFrameController {
     private Factory factory;
     private TaskDao taskDao;
     private LessonDao lessonDao;
+    private ShorthandDao shorthandDao;
     private DocumentationDao documentationDao;
     private CompletedTaskDao completedTaskDao;
     private ErrorDao errorDao;
+    private KeywordDao keywordDao;
     
     public MainFrameController() {
     }
@@ -147,7 +157,56 @@ public class MainFrameController {
         }
         return errors;
     }
+    
+    public ArrayList<Keyword> getKeywords() {
+        factory = Factory.getInstance();
+        keywordDao = factory.getKeywordDao();
+        
+        ArrayList<Keyword> keywords = null;
+        
+        try {
+            keywords = keywordDao.getAllKeywords();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return keywords;
+    }
      
+    public ArrayList<Shorthand> getShorthand() {
+        factory = Factory.getInstance();
+        shorthandDao = factory.getShorthandDao();
+        
+        ArrayList<Shorthand> shorthands = null;
+        
+        try {
+            shorthands = shorthandDao.getAllShorthands();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return shorthands;
+    }
+    
+    public CompletionProvider createCompletionProvider() {
+        DefaultCompletionProvider provider = new DefaultCompletionProvider();
+        
+        ArrayList<Keyword> keywords = getKeywords();
+        
+        for (Keyword keyword : keywords) {
+            provider.addCompletion(new BasicCompletion(provider, keyword.getKeywordText()));
+        }
+        
+        ArrayList<Shorthand> shorthands = getShorthand();
+        
+        for (Shorthand shorthand : shorthands) {
+            provider.addCompletion(new ShorthandCompletion(provider, shorthand.getShortText(),
+            shorthand.getFullText(), shorthand.getFullText()));
+        }
+        
+        return provider;     
+    }
+    
     public User getCurrentUser() {
         factory = Factory.getInstance();
         return factory.getCurrentUser();

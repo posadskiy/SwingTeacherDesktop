@@ -5,28 +5,26 @@
  */
 package dev.dposadsky.java.swingteacherdesktop.dao.impl;
 
-import dev.dposadsky.java.swingteacherdesktop.dao.KeywordDao;
-import dev.dposadsky.java.swingteacherdesktop.tables.Keyword;
+import dev.dposadsky.java.swingteacherdesktop.dao.ShorthandDao;
+import dev.dposadsky.java.swingteacherdesktop.tables.Shorthand;
 import dev.dposadsky.java.swingteacherdesktop.utils.HibernateUtils;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 /**
  *
  * @author DPosadsky
  */
-public class KeywordDaoImpl implements KeywordDao {
-
+public class ShorthandDaoImpl implements ShorthandDao {
+    
     @Override
-    public void addKeyword(Keyword keyword) throws SQLException {
+    public void addShorthand(Shorthand shorthand) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             session.beginTransaction();
-            session.save(keyword);
+            session.save(shorthand);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,12 +35,12 @@ public class KeywordDaoImpl implements KeywordDao {
     }
 
     @Override
-    public void deleteKeyword(Keyword keyword) throws SQLException {
+    public void deleteShorthand(Shorthand shorthand) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             session.beginTransaction();
-            session.delete(keyword);
+            session.delete(shorthand);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,12 +51,12 @@ public class KeywordDaoImpl implements KeywordDao {
     }
 
     @Override
-    public void deleteKeyword(int id) throws SQLException {
+    public void deleteShorthand(int id) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             session.beginTransaction();
-            session.delete(getKeyword(id));
+            session.delete(getShorthand(id));
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,13 +67,13 @@ public class KeywordDaoImpl implements KeywordDao {
     }
 
     @Override
-    public Keyword getKeyword(int id) throws SQLException {
-        Keyword keyword = null;
+    public Shorthand getShorthand(int id) throws SQLException {
+        Shorthand shorthand = null;
         
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
-            keyword = (Keyword) session.load(Keyword.class, id);
+            shorthand = (Shorthand) session.load(Shorthand.class, id);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -83,17 +81,17 @@ public class KeywordDaoImpl implements KeywordDao {
                 session.close();
         }
         
-        return keyword;
+        return shorthand;
     }
 
     @Override
-    public ArrayList<Keyword> getAllKeywords() throws SQLException {
-        ArrayList<Keyword> keywords = null;
+    public ArrayList<Shorthand> getAllShorthands() throws SQLException {
+        ArrayList<Shorthand> shorthands = null;
         
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
-            keywords = (ArrayList<Keyword>) session.createCriteria(Keyword.class).list();
+            shorthands = (ArrayList<Shorthand>) session.createCriteria(Shorthand.class).list();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -101,7 +99,7 @@ public class KeywordDaoImpl implements KeywordDao {
                 session.close();
         }
         
-        return keywords;
+        return shorthands;
     }
- 
+    
 }

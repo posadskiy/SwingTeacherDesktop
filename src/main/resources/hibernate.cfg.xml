@@ -33,6 +33,7 @@
     <mapping class="dev.dposadsky.java.swingteacherdesktop.tables.Error" />
     <mapping class="dev.dposadsky.java.swingteacherdesktop.tables.Keyword" />
     <mapping class="dev.dposadsky.java.swingteacherdesktop.tables.Lesson" />
+    <mapping class="dev.dposadsky.java.swingteacherdesktop.tables.Shorthand" />
     <mapping class="dev.dposadsky.java.swingteacherdesktop.tables.Task" />
     <mapping class="dev.dposadsky.java.swingteacherdesktop.tables.TaskCategory" />
     <mapping class="dev.dposadsky.java.swingteacherdesktop.tables.User" />

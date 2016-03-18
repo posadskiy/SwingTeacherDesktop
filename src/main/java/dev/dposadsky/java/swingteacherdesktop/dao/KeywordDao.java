@@ -20,6 +20,5 @@ public interface KeywordDao {
     public void deleteKeyword(int id) throws SQLException;
     public Keyword getKeyword(int id) throws SQLException;
     public ArrayList<Keyword> getAllKeywords() throws SQLException;
-    public ArrayList<Keyword> getLessonsByType(int type) throws SQLException;
     
 }

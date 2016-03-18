@@ -18,8 +18,9 @@ import javax.persistence.Table;
  * @author DPosadsky
  */
 @Entity
-@Table(name = "keyword")
-public class Keyword implements Serializable {
+@Table(name = "shorthand")
+public class Shorthand implements Serializable {
+    
     private static final long serialVersionUID = -1L;
     
     public static long getSerialVersionUID() {
@@ -29,10 +30,13 @@ public class Keyword implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer id;   
     
-    @Column(name = "keyword_text")
-    private String keywordText;
+    @Column(name = "short_text")
+    private String shortText;
+    
+    @Column(name = "full_text")
+    private String fullText;
 
     public Integer getId() {
         return id;
@@ -42,12 +46,20 @@ public class Keyword implements Serializable {
         this.id = id;
     }
 
-    public String getKeywordText() {
-        return keywordText;
+    public String getShortText() {
+        return shortText;
     }
 
-    public void setKeywordText(String keywordText) {
-        this.keywordText = keywordText;
+    public void setShortText(String shortText) {
+        this.shortText = shortText;
     }
 
+    public String getFullText() {
+        return fullText;
+    }
+
+    public void setFullText(String fullText) {
+        this.fullText = fullText;
+    }
+    
 }
