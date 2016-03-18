@@ -6,7 +6,6 @@
 package dev.dposadsky.java.swingteacherdesktop.dao;
 
 import dev.dposadsky.java.swingteacherdesktop.tables.Lesson;
-import dev.dposadsky.java.swingteacherdesktop.tables.Task;
 import java.sql.SQLException;
 import java.util.ArrayList;
 

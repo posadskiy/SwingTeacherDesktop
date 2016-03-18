@@ -5,13 +5,11 @@
  */
 package dev.dposadsky.java.swingteacherdesktop.dao.impl;
 
-import dev.dposadsky.java.swingteacherdesktop.dao.LessonDao;
-import dev.dposadsky.java.swingteacherdesktop.tables.Lesson;
-import dev.dposadsky.java.swingteacherdesktop.tables.Task;
+import dev.dposadsky.java.swingteacherdesktop.dao.KeywordDao;
+import dev.dposadsky.java.swingteacherdesktop.tables.Keyword;
 import dev.dposadsky.java.swingteacherdesktop.utils.HibernateUtils;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -20,15 +18,15 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author DPosadsky
  */
-public class LessonDaoImpl implements LessonDao {
+public class KeywordDaoImpl implements KeywordDao {
 
     @Override
-    public void addLesson(Lesson lesson) throws SQLException {
+    public void addKeyword(Keyword keyword) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             session.beginTransaction();
-            session.save(lesson);
+            session.save(keyword);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,12 +37,12 @@ public class LessonDaoImpl implements LessonDao {
     }
 
     @Override
-    public void deleteLesson(Lesson lesson) throws SQLException {
+    public void deleteKeyword(Keyword keyword) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             session.beginTransaction();
-            session.delete(lesson);
+            session.delete(keyword);
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,12 +53,12 @@ public class LessonDaoImpl implements LessonDao {
     }
 
     @Override
-    public void deleteLesson(int id) throws SQLException {
+    public void deleteKeyword(int id) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             session.beginTransaction();
-            session.delete(getLesson(id));
+            session.delete(getKeyword(id));
             session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,13 +69,13 @@ public class LessonDaoImpl implements LessonDao {
     }
 
     @Override
-    public Lesson getLesson(int id) throws SQLException {
-        Lesson lesson = null;
+    public Keyword getKeyword(int id) throws SQLException {
+        Keyword keyword = null;
         
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
-            lesson = (Lesson) session.load(Lesson.class, id);
+            keyword = (Keyword) session.load(Keyword.class, id);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -85,17 +83,17 @@ public class LessonDaoImpl implements LessonDao {
                 session.close();
         }
         
-        return lesson;
+        return keyword;
     }
 
     @Override
-    public ArrayList<Lesson> getAllLessons() throws SQLException {
-        ArrayList<Lesson> lessons = null;
+    public ArrayList<Keyword> getAllKeywords() throws SQLException {
+        ArrayList<Keyword> keywords = null;
         
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
-            lessons = (ArrayList<Lesson>) session.createCriteria(Lesson.class).addOrder(Order.asc("lessonNumber")).list();
+            keywords = (ArrayList<Keyword>) session.createCriteria(Keyword.class).list();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -103,17 +101,17 @@ public class LessonDaoImpl implements LessonDao {
                 session.close();
         }
         
-        return lessons;
+        return keywords;
     }
 
     @Override
-    public ArrayList<Lesson> getLessonsByCategory(int category) throws SQLException {
-        ArrayList<Lesson> lessons = null;
+    public ArrayList<Keyword> getLessonsByType(int type) throws SQLException {
+        ArrayList<Keyword> keywords = null;
         
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
-            lessons = (ArrayList<Lesson>) session.createCriteria(Lesson.class).add(Restrictions.eq("idTaskCategory", new Integer(category))).addOrder(Order.asc("lessonNumber")).list();
+            keywords = (ArrayList<Keyword>) session.createCriteria(Keyword.class).add(Restrictions.eq("type", new Integer(type))).list();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -121,9 +119,7 @@ public class LessonDaoImpl implements LessonDao {
                 session.close();
         }
         
-        return lessons;
+        return keywords;
     }
-    
-    
     
 }
