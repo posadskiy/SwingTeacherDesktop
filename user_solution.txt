@@ -1,8 +1,0 @@
-button.setText("Button"); 
-button.setSize(20,30);
-comboBox.setText("ComboBox"); 
-comboBox.setSize(70,100);
-frame.add(button); 
-frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-frame.setSize(300,300); 
-frame.setVisible(true);

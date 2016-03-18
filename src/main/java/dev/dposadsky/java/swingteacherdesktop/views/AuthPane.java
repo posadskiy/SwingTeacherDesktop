@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -122,9 +123,9 @@ public class AuthPane extends JFrame{
         setTitle("Авторизация");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 450);
-        setVisible(true);
-        //pack();
+        pack();
         setLocationRelativeTo(null);
+        setVisible(true);
     }
     
     public ImagePanel getImage() {

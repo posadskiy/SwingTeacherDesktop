@@ -7,6 +7,7 @@ package dev.dposadsky.java.swingteacherdesktop.views;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 /**
