@@ -115,10 +115,38 @@ public class Checker {
     }
     
     public boolean checkHelper(String r, String u) {
-        //System.out.println(r);
-        //System.out.println(u);
         Pattern p = Pattern.compile("^"+r+"\\([\\s\\S]*\\)$");  
         Matcher m = p.matcher(u); 
+        if (!m.matches())
+            return false;        
+        return true;
+    }
+    
+    public boolean checkLogin(String login) {
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9_]{3,20}$");  
+        Matcher m = pattern.matcher(login); 
+        if (!m.matches())
+            return false;        
+        return true;
+    }
+    
+    public boolean checkPassword(String password, String passwordRepeat) {
+        Pattern pattern = Pattern.compile("^[\\S]{8,30}$");  
+        Matcher m = pattern.matcher(password); 
+        if (!m.matches())
+            return false;        
+        if (checkPasswordMatch(password, passwordRepeat))
+            return true;
+        return false;
+    }
+    
+    private boolean checkPasswordMatch(String password, String passwordRepeat) {
+        return password.equals(passwordRepeat);
+    }
+    
+    public boolean checkEMail(String eMail) {
+        Pattern pattern = Pattern.compile("^.+@.+\\..+$");  
+        Matcher m = pattern.matcher(eMail); 
         if (!m.matches())
             return false;        
         return true;

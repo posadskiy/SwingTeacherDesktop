@@ -35,27 +35,35 @@ public class Factory {
     
     public static Factory instance = new Factory();
     
-    AuthPaneController authPaneController;
-    RegistrationPaneController registrationPaneController;
+    Checker checker;
     
-    AuthPane authPane;
-    RegistrationPane registrationPane;
+    private AuthPaneController authPaneController;
+    private RegistrationPaneController registrationPaneController;
     
-    public LessonDao lessonDao;
-    public ShorthandDao shorthandDao;
-    public TaskDao taskDao;
-    public DocumentationDao documentationDao;
-    public ErrorDao errorDao;
-    public KeywordDao keywordDao;
-    public UserDao userDao;
-    public CompletedTaskDao completedTaskDao;
+    private AuthPane authPane;
+    private RegistrationPane registrationPane;
     
-    public User currentUser;
+    private  LessonDao lessonDao;
+    private  ShorthandDao shorthandDao;
+    private  TaskDao taskDao;
+    private  DocumentationDao documentationDao;
+    private  ErrorDao errorDao;
+    private  KeywordDao keywordDao;
+    private  UserDao userDao;
+    private  CompletedTaskDao completedTaskDao;
+    
+    private  User currentUser;
     
     private Factory() { }
     
     public static Factory getInstance() {
         return Factory.instance;    
+    }
+    
+    public Checker getChecker() {
+        if (checker == null) 
+            checker = new Checker();
+        return checker;
     }
     
     public AuthPaneController getAuthPaneController() {

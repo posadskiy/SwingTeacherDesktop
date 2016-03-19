@@ -27,12 +27,12 @@ public class RegistrationPane extends JFrame {
     JLabel titleLabel;
     JLabel loginLabel;
     JLabel passwordLabel;
-    JLabel repeatPasswordLabel;
+    JLabel passwordRepeatLabel;
     JLabel eMailLabel;
     
     JTextField loginTextField;
     JPasswordField passwordField;
-    JPasswordField repeatPassworsField;
+    JPasswordField passwordRepeatField;
     JTextField eMailTextField;
     
     JButton okButton;
@@ -55,12 +55,12 @@ public class RegistrationPane extends JFrame {
         titleLabel = new JLabel("Регистрация");
         loginLabel = new JLabel("Логин");
         passwordLabel = new JLabel("Пароль");
-        repeatPasswordLabel = new JLabel("Повторите пароль");
+        passwordRepeatLabel = new JLabel("Повторите пароль");
         eMailLabel = new JLabel("e-mail");
         
         loginTextField = new JTextField();
         passwordField = new JPasswordField();
-        repeatPassworsField = new JPasswordField();
+        passwordRepeatField = new JPasswordField();
         eMailTextField = new JFormattedTextField();
         
         okButton = new JButton("Регистрация");
@@ -68,7 +68,9 @@ public class RegistrationPane extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if (controller.registration(loginTextField.getText(), 
-                        String.copyValueOf(passwordField.getPassword()), eMailTextField.getText())) {
+                        String.copyValueOf(passwordField.getPassword()), 
+                        String.copyValueOf(passwordRepeatField.getPassword()), 
+                        eMailTextField.getText())) {
                     controller.closePane();
                     JOptionPane.showMessageDialog(new JFrame(), 
                             "Вы зарегистрированы! Используйте введенные данные для входа", "Успешно", 
@@ -87,8 +89,8 @@ public class RegistrationPane extends JFrame {
         add(loginTextField);
         add(passwordLabel);
         add(passwordField);
-        add(repeatPasswordLabel);
-        add(repeatPassworsField);
+        add(passwordRepeatLabel);
+        add(passwordRepeatField);
         add(eMailLabel);
         add(eMailTextField);
         
@@ -105,6 +107,22 @@ public class RegistrationPane extends JFrame {
         setVisible(true);
         //pack();
         setLocationRelativeTo(null);
+    }
+    
+    public JTextField getLoginTextField() {
+        return loginTextField;
+    }
+    
+    public JPasswordField getPasswordField() {
+        return passwordField;
+    }
+    
+    public JPasswordField getPasswordRepeatField() {
+        return passwordRepeatField;
+    }
+    
+    public JTextField getEMailTextField() {
+        return eMailTextField;
     }
     
     public static void main(String[] args) {
