@@ -151,4 +151,13 @@ public class Checker {
             return false;        
         return true;
     }
+    
+    public boolean isNumeric(String s) {
+        try {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }

@@ -23,6 +23,8 @@ import dev.dposadsky.java.swingteacherdesktop.dao.impl.LessonDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.ShorthandDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.TaskDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.UserDaoImpl;
+import dev.dposadsky.java.swingteacherdesktop.email.SenderSSL;
+import dev.dposadsky.java.swingteacherdesktop.email.SenderTLS;
 import dev.dposadsky.java.swingteacherdesktop.tables.User;
 import dev.dposadsky.java.swingteacherdesktop.views.AuthPane;
 import dev.dposadsky.java.swingteacherdesktop.views.RegistrationPane;
@@ -53,6 +55,9 @@ public class Factory {
     private  CompletedTaskDao completedTaskDao;
     
     private  User currentUser;
+    
+    private SenderTLS senderTLS;
+    private SenderSSL senderSSL;
     
     private Factory() { }
     
@@ -146,5 +151,17 @@ public class Factory {
     
     public void serCurrentUser(User user) {
         currentUser = user;
+    }
+    
+    public SenderTLS getSenderTLS() {
+        if (senderTLS == null) 
+            senderTLS = new SenderTLS("swingteacherru@gmail.com","{ee78$@oj3X9R2");
+        return senderTLS;
+    }
+    
+    public SenderSSL getSenderSSL() {
+        if (senderSSL == null) 
+            senderSSL = new SenderSSL("swingteacherru@gmail.com","{ee78$@oj3X9R2");
+        return senderSSL;
     }
 }

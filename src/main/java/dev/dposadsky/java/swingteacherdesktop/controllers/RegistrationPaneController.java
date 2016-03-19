@@ -6,6 +6,7 @@
 package dev.dposadsky.java.swingteacherdesktop.controllers;
 
 import dev.dposadsky.java.swingteacherdesktop.dao.UserDao;
+import dev.dposadsky.java.swingteacherdesktop.email.SenderTLS;
 import dev.dposadsky.java.swingteacherdesktop.main.Checker;
 import dev.dposadsky.java.swingteacherdesktop.main.Factory;
 import dev.dposadsky.java.swingteacherdesktop.tables.User;
@@ -17,6 +18,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -50,16 +53,21 @@ public class RegistrationPaneController {
         }
 
 
-        if (checker.checkPassword(password, passwordRepeat))
+        if (checker.checkPassword(password, passwordRepeat)) {
+            registrationPane.getPasswordField().setBorder(null);
+            registrationPane.getPasswordRepeatField().setBorder(null);
             user.setPassword(StringUtils.md5Apache(password));
+        }
         else {
             registrationPane.getPasswordField().setBorder(BorderFactory.createLineBorder(Color.red, 1));
             registrationPane.getPasswordRepeatField().setBorder(BorderFactory.createLineBorder(Color.red, 1));
             condition = false;
         }
 
-        if (checker.checkEMail(eMail))
+        if (checker.checkEMail(eMail)) {
+            registrationPane.getEMailTextField().setBorder(null);
             user.setEmail(eMail);
+        }
         else {
             registrationPane.getEMailTextField().setBorder(BorderFactory.createLineBorder(Color.red, 1));
             condition = false;
@@ -67,17 +75,33 @@ public class RegistrationPaneController {
         
         if (!condition)
             return false;
-            
+          
+        SenderTLS sender = factory.getSenderTLS();
+        int randomCode = (int) (Math.random()*10000000);
+        sender.send("Регистрация", "Ваш код: " + randomCode, "swingteacherru@gmail.com", eMail);
+        
+        String returnString = (JOptionPane.showInputDialog(new JFrame(), 
+                            "На Ваш e-mail должен прийти проверочный код. Введите его:", 
+                            "Подтверждение регистрации", JOptionPane.DEFAULT_OPTION));
+        if (!checker.isNumeric(returnString)) 
+            return false;
+        
+        int returnCode = Integer.parseInt(returnString);
+        
+        if (returnCode != randomCode) 
+            return false;
+        
         try {
             userDao.addUser(user);
         } catch (SQLException ex) {
             System.out.println("Exception in registriation in RegistrationPaneController: " + ex);
             return false;
         }
+                
         
         return true;
     }
-    
+ 
     public void closePane() {
         Factory factory = Factory.getInstance();
         factory.getRegistrationPane().setVisible(false);
