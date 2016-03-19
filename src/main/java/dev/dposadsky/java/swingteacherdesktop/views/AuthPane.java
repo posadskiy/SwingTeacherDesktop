@@ -6,6 +6,7 @@
 package dev.dposadsky.java.swingteacherdesktop.views;
 
 import dev.dposadsky.java.swingteacherdesktop.controllers.AuthPaneController;
+import dev.dposadsky.java.swingteacherdesktop.main.Factory;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -37,6 +39,7 @@ public class AuthPane extends JFrame{
     JLabel auth;
     JLabel loginLabel;
     JLabel passLabel;
+    JLabel errorLabel;
     
     JTextField loginField;
     JPasswordField passField;
@@ -53,8 +56,8 @@ public class AuthPane extends JFrame{
     }
     
     private void initComponent() {
-        controller = new AuthPaneController();
-        controller.setAuthPane(this);
+        Factory factory = Factory.getInstance();
+        controller = factory.getAuthPaneController();
         
         imgPanel = getImage();
         imgPanel.setPreferredSize(new Dimension(800,450));
@@ -76,6 +79,15 @@ public class AuthPane extends JFrame{
         passLabel = new JLabel("Пароль", SwingConstants.CENTER);
         passLabel.setFont(new Font("Verdana", Font.BOLD, 20));
         passLabel.setForeground(Color.WHITE);
+        errorLabel = new JLabel("Такого пользователя не существует. Проверьте введенные данные.", 
+                SwingConstants.CENTER);
+        errorLabel.setFont(new Font("Verdana", Font.PLAIN, 15));
+        errorLabel.setForeground(Color.red);
+        errorLabel.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(Color.RED, 1, true),
+                BorderFactory.createEmptyBorder(0,0,0,0)));
+        errorLabel.setVisible(false);
+        
         
         loginField = new JTextField();
         loginField.setMinimumSize(new Dimension(100, 40));
@@ -106,12 +118,14 @@ public class AuthPane extends JFrame{
             }
         });
  
-        imgPanel.add(loginLabel, "w 25%, gap 0px 0px 300px 45px");
+        imgPanel.add(loginLabel, "w 25%, gap 0px 0px 300px 0px");
         imgPanel.add(loginField, "w 25%");
         imgPanel.add(passLabel, "w 25%");
         imgPanel.add(passField, "w 25%");
         
-        imgPanel.add(registration);
+        imgPanel.add(errorLabel, "span 4");
+        
+        imgPanel.add(registration, "gap 0px 0px 10px 0px");
         imgPanel.add(rememberPass);
         
         imgPanel.add(ok, "span 2");
@@ -123,7 +137,7 @@ public class AuthPane extends JFrame{
         setTitle("Авторизация");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 450);
-        pack();
+        //pack();
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -139,6 +153,10 @@ public class AuthPane extends JFrame{
         return img;
     }
     
+    public JLabel getErrorLabel() {
+        return errorLabel;
+    }
+    
     public void clickRegistrationButton(ActionEvent ae) {
         controller.registrationPaneSetVisible(true);
     }
@@ -152,6 +170,7 @@ public class AuthPane extends JFrame{
     }
     
     public static void main(String[] args) {
-        AuthPane authPane = new AuthPane();
+        Factory factory = Factory.getInstance();
+        AuthPane authPane = factory.getAuthPane();   
     }
 }

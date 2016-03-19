@@ -6,6 +6,7 @@
 package dev.dposadsky.java.swingteacherdesktop.views;
 
 import dev.dposadsky.java.swingteacherdesktop.controllers.RegistrationPaneController;
+import dev.dposadsky.java.swingteacherdesktop.main.Factory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -45,8 +46,8 @@ public class RegistrationPane extends JFrame {
     }
     
     public void initComponents() {
-        controller = new RegistrationPaneController();
-        controller.setRegistrationPane(this);
+        Factory factory = Factory.getInstance();
+        controller = factory.getRegistrationPaneController();
         
         layout = new MigLayout("wrap 2", "grow, fill");
         setLayout(layout);
@@ -107,6 +108,7 @@ public class RegistrationPane extends JFrame {
     }
     
     public static void main(String[] args) {
-        RegistrationPane rp = new RegistrationPane();
+        Factory factory = Factory.getInstance();
+        RegistrationPane pane = factory.getRegistrationPane();
     }
 }

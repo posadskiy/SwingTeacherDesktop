@@ -46,11 +46,8 @@ public class RegistrationPaneController {
     }
     
     public void closePane() {
-        registrationPane.setVisible(false);
-    }
-    
-    public void setRegistrationPane(RegistrationPane registrationPane) {
-        this.registrationPane = registrationPane;
+        Factory factory = Factory.getInstance();
+        factory.getRegistrationPane().setVisible(false);
     }
     
 }

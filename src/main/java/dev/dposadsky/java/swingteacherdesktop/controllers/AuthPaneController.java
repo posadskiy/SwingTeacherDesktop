@@ -24,7 +24,6 @@ public class AuthPaneController {
     LoginListener loginListenerImpl;
     AuthLoginService authLoginService;
     
-    AuthPane authPane;
     RegistrationPane registrationPane;
     
     public void okClickButton(String login, String pass) {
@@ -34,7 +33,7 @@ public class AuthPaneController {
         loginListenerImpl = new LoginListener();
         authLoginService = new AuthLoginService();
         if (authLoginService.authenticate(login, pass)) {
-            authPane.setVisible(false);
+            factory.getAuthPane().setVisible(false);
             loginListenerImpl.loginSucceeded();
         }
         else
@@ -48,8 +47,10 @@ public class AuthPaneController {
         registrationPane.setVisible(b);
     }
     
-    public void setAuthPane(AuthPane authPane) {
-        this.authPane = authPane;
+    public void errorSetVisible(boolean b) {
+        Factory factory = Factory.getInstance();
+        AuthPane authPane = factory.getAuthPane();
+        authPane.getErrorLabel().setVisible(b);
     }
     
 }
