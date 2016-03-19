@@ -16,6 +16,7 @@ import dev.dposadsky.java.swingteacherdesktop.main.Checker;
 import dev.dposadsky.java.swingteacherdesktop.main.Factory;
 import dev.dposadsky.java.swingteacherdesktop.tables.CompletedTask;
 import dev.dposadsky.java.swingteacherdesktop.tables.Documentation;
+import dev.dposadsky.java.swingteacherdesktop.tables.Error;
 import dev.dposadsky.java.swingteacherdesktop.tables.Keyword;
 import dev.dposadsky.java.swingteacherdesktop.tables.Lesson;
 import dev.dposadsky.java.swingteacherdesktop.tables.Shorthand;
@@ -117,6 +118,21 @@ public class MainFrameController {
         return documentation; 
     }
     
+    public Error getError(int i) {
+        factory = Factory.getInstance();
+        errorDao = factory.getErrorDao();
+        
+        Error error = null;
+        
+        try {
+            error = errorDao.getError(i);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return error;
+    }
+    
     public void loadAndRunClassFromFile(String operators, String imports) {
         String problems = "";
         try {
@@ -153,7 +169,7 @@ public class MainFrameController {
         ArrayList<CheckerResult> checkerResults = checker.check(rightAnswer, userAnswer);
         for (CheckerResult checkerResult : checkerResults) {
             if (checkerResult.getErrorCode() != 0)
-                errors += "Ошибка в компоненте " + checkerResult.getClassName() + " с кодом " + checkerResult.getErrorCode() + "\n";
+                errors += "Ошибка в компоненте " + checkerResult.getClassName() + ". " + getError(checkerResult.getErrorCode()).getErrorText() + "\n";
         }
         return errors;
     }

@@ -367,7 +367,6 @@ public class MainFrameView extends JFrame {
      
     public JScrollPane doCreateAnswerScrollPane(String text) {
         RSyntaxTextArea textArea = new RSyntaxTextArea(text);
-        //LanguageSupportFactory.get().register(textArea);
 
         TitledBorder tBorder = BorderFactory.createTitledBorder("Решение");
         tBorder.setTitleFont(new Font("Serif", Font.BOLD, 15));
@@ -377,13 +376,7 @@ public class MainFrameView extends JFrame {
         CompletionProvider provider = controller.createCompletionProvider();
         AutoCompletion ac = new AutoCompletion(provider);
         ac.install(textArea);
-        
-        /*
-        LanguageSupportFactory lsf = LanguageSupportFactory.get();
-        JavaLanguageSupport support = (JavaLanguageSupport) lsf.getSupportFor(SyntaxConstants.SYNTAX_STYLE_JAVA);
-        support.install(textArea);
-        support.getParser(textArea);
-        */
+
         JScrollPane scrollPane = new JScrollPane(textArea);
         return scrollPane;
     } 

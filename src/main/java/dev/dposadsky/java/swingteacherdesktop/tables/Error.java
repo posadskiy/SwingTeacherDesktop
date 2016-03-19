@@ -18,7 +18,7 @@ import javax.persistence.Table;
  * @author DPosadsky
  */
 @Entity
-@Table(name = "errors")
+@Table(name = "error")
 public class Error implements Serializable {
 
     private static final long serialVersionUID = -5527568543302296042L;
@@ -29,12 +29,9 @@ public class Error implements Serializable {
  
     @Id
     @Column(name = "id")
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-     
-    @Column(name = "error_code")
-    private String errorCode;
-    
+
     @Column(name = "error_text")
     private String errorText;
 
@@ -44,14 +41,6 @@ public class Error implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
     }
 
     public String getErrorText() {
