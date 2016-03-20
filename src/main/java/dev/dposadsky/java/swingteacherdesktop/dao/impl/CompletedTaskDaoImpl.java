@@ -28,7 +28,6 @@ public class CompletedTaskDaoImpl implements CompletedTaskDao {
             session.save(completedTask);
             session.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("fadfadfasff");
             e.printStackTrace();
         } finally {
             if ((session != null) && (session.isOpen()))
@@ -104,6 +103,26 @@ public class CompletedTaskDaoImpl implements CompletedTaskDao {
         
         return completedTasks;
     }
+    
+    @Override
+    public CompletedTask getCompletedTaskByUserIdByTaskId(int userId, int taskId) throws SQLException {
+        ArrayList<CompletedTask> completedTasks = null;
+        
+        Session session = null;
+        try {
+            session = HibernateUtils.getSessionFactory().openSession();
+            completedTasks = (ArrayList<CompletedTask>) session.createCriteria(CompletedTask.class)
+                    .add(Restrictions.eq("userId", new Integer(userId)))
+                    .add(Restrictions.eq("taskId", new Integer(taskId))).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if ((session != null) && (session.isOpen()))
+                session.close();
+        }
+        
+        return (completedTasks != null) ? completedTasks.get(0) : null;
+    }
 
     @Override
     public ArrayList<CompletedTask> getAllCompletedTask() throws SQLException {
@@ -122,5 +141,5 @@ public class CompletedTaskDaoImpl implements CompletedTaskDao {
         
         return completedTasks;
     }
-    
+  
 }

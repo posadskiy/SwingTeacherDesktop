@@ -6,6 +6,8 @@
 package dev.dposadsky.java.swingteacherdesktop.main;
 
 import dev.dposadsky.java.swingteacherdesktop.controllers.AuthPaneController;
+import dev.dposadsky.java.swingteacherdesktop.controllers.MainFrameController;
+import dev.dposadsky.java.swingteacherdesktop.controllers.PopupWindowsController;
 import dev.dposadsky.java.swingteacherdesktop.controllers.RegistrationPaneController;
 import dev.dposadsky.java.swingteacherdesktop.dao.CompletedTaskDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.DocumentationDao;
@@ -27,6 +29,8 @@ import dev.dposadsky.java.swingteacherdesktop.email.SenderSSL;
 import dev.dposadsky.java.swingteacherdesktop.email.SenderTLS;
 import dev.dposadsky.java.swingteacherdesktop.tables.User;
 import dev.dposadsky.java.swingteacherdesktop.views.AuthPane;
+import dev.dposadsky.java.swingteacherdesktop.views.MainFrameView;
+import dev.dposadsky.java.swingteacherdesktop.views.PopupWindowsView;
 import dev.dposadsky.java.swingteacherdesktop.views.RegistrationPane;
 
 /**
@@ -41,20 +45,24 @@ public class Factory {
     
     private AuthPaneController authPaneController;
     private RegistrationPaneController registrationPaneController;
+    private MainFrameController mainFrameController;
+    private PopupWindowsController popupWindowsController;
     
     private AuthPane authPane;
     private RegistrationPane registrationPane;
+    private MainFrameView mainFrameView;
+    private PopupWindowsView popupWindowsView;
     
-    private  LessonDao lessonDao;
-    private  ShorthandDao shorthandDao;
-    private  TaskDao taskDao;
-    private  DocumentationDao documentationDao;
-    private  ErrorDao errorDao;
-    private  KeywordDao keywordDao;
-    private  UserDao userDao;
-    private  CompletedTaskDao completedTaskDao;
+    private LessonDao lessonDao;
+    private ShorthandDao shorthandDao;
+    private TaskDao taskDao;
+    private DocumentationDao documentationDao;
+    private ErrorDao errorDao;
+    private KeywordDao keywordDao;
+    private UserDao userDao;
+    private CompletedTaskDao completedTaskDao;
     
-    private  User currentUser;
+    private User currentUser;
     
     private SenderTLS senderTLS;
     private SenderSSL senderSSL;
@@ -83,6 +91,18 @@ public class Factory {
         return registrationPaneController;
     }
     
+    public MainFrameController getMainFrameController() {
+        if (mainFrameController == null)
+            mainFrameController = new MainFrameController();
+        return mainFrameController;
+    }
+    
+    public PopupWindowsController getPopupWindowsController() {
+        if (popupWindowsController == null) 
+            popupWindowsController = new PopupWindowsController();
+        return popupWindowsController;
+    }
+    
     public AuthPane getAuthPane() {
         if (authPane == null)
             authPane = new AuthPane();
@@ -93,6 +113,18 @@ public class Factory {
         if (registrationPane == null) 
             registrationPane = new RegistrationPane();
         return registrationPane;
+    }
+    
+    public MainFrameView getMainFrameView() {
+        if (mainFrameView == null) 
+            mainFrameView = new MainFrameView();
+        return mainFrameView;
+    }
+    
+    public PopupWindowsView getPopupWindowsView() {
+        if (popupWindowsView == null)
+            popupWindowsView = new PopupWindowsView();
+        return popupWindowsView;
     }
     
     public LessonDao getLessonDao() {

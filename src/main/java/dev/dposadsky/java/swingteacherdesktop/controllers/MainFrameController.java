@@ -83,6 +83,18 @@ public class MainFrameController {
         return tasks;  
     }
     
+    public CompletedTask getCompletedTaskByUserIdByTaskId(int userId, int taskId) {
+        factory = Factory.getInstance();
+        completedTaskDao = factory.getCompletedTaskDao();
+        CompletedTask completedTask = null;
+        try {
+            completedTask = completedTaskDao.getCompletedTaskByUserIdByTaskId(userId, taskId); 
+        } catch (SQLException ex) {
+            System.out.println("Exception in getCompletedTaskByUserId in Controller: " + ex);
+        }
+        return completedTask;
+    }
+    
     public ArrayList<CompletedTask> getCompletedTaskByUserId(int id) {
         factory = Factory.getInstance();
         completedTaskDao = factory.getCompletedTaskDao();
@@ -222,6 +234,8 @@ public class MainFrameController {
         
         return provider;     
     }
+    
+    
     
     public User getCurrentUser() {
         factory = Factory.getInstance();

@@ -6,6 +6,8 @@
 package dev.dposadsky.java.swingteacherdesktop.views;
 
 import dev.dposadsky.java.swingteacherdesktop.controllers.MainFrameController;
+import dev.dposadsky.java.swingteacherdesktop.controllers.PopupWindowsController;
+import dev.dposadsky.java.swingteacherdesktop.main.Factory;
 import dev.dposadsky.java.swingteacherdesktop.models.ComboBoxModel;
 import dev.dposadsky.java.swingteacherdesktop.tables.CompletedTask;
 import dev.dposadsky.java.swingteacherdesktop.tables.Lesson;
@@ -13,8 +15,6 @@ import dev.dposadsky.java.swingteacherdesktop.tables.Task;
 import dev.dposadsky.java.swingteacherdesktop.tables.TaskCategory;
 import dev.dposadsky.java.swingteacherdesktop.tables.User;
 import dev.dposadsky.java.swingteacherdesktop.utils.StringUtils;
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -39,25 +39,17 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 import org.fife.ui.autocomplete.AutoCompletion;
-import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
-import org.fife.ui.autocomplete.DefaultCompletionProvider;
-import org.fife.ui.autocomplete.ShorthandCompletion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-
 /**
  *
  * @author DPosadsky
  */
 public class MainFrameView extends JFrame {
     
-    User currentUser;
-    
-    // Основные компоненты
-    private JMenuBar menuBar;
-    
-    //
+    // Элементы интерфейса
+    private JMenuBar menuBar; 
     private JLabel lessonLabel;
     private JLabel taskLabel;
     private JComboBox lessonComboBox;
@@ -67,83 +59,79 @@ public class MainFrameView extends JFrame {
     private JScrollPane answerScrollPane;
     private JScrollPane questionScrollPane;
     private JScrollPane documentationScrollPane;
-  
-    // Разметки 
-    BorderLayout mainBorderLayout;
     
-    /* 
-    ** Вспомогательные компаненты
-    */
-    
-    private MainFrameController controller;
+    // Вспомогательные компоненты
+    private MainFrameController mainFrameController;
+    private PopupWindowsController popupWindowsController;
+    private User currentUser;
 
     // Данные из БД
-    ArrayList<Task> tasks;
-    ArrayList<Lesson> lessons;
-    ArrayList<CompletedTask> completedTasks;
-    ArrayList<Integer> completedTasksId;
+    private ArrayList<Task> tasks;
+    private ArrayList<Lesson> lessons;
+    private ArrayList<CompletedTask> completedTasks;
+    private ArrayList<Integer> completedTasksId;
     
     int taskCategory;
     int lesson;
     
-    TaskCategory categoryTask;
+    private TaskCategory categoryTask;
 
     public MainFrameView() {
         initComponents();
     }
-    
+
+    /*
+    * Using in psvm
+    */
     public MainFrameView(User user) {
         this.currentUser = user;
         initComponents();
     }
     
-    public void initComponents() {  
+    public void initComponents() {     
+        Factory factory = Factory.getInstance();
+        mainFrameController = factory.getMainFrameController();
+        popupWindowsController = factory.getPopupWindowsController();
         
-        controller = new MainFrameController();
-        currentUser = controller.getCurrentUser();
-        
-        try {
-            javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | ClassNotFoundException ex) {
-            
-        } 
+        currentUser = mainFrameController.getCurrentUser();    
   
         taskCategory = 1;
         lesson = 0;
         
         // Получение объектов из БД             
-        lessons = controller.getLessonByCategory(taskCategory);
-        tasks = controller.getTasksByLesson(lesson);
-        completedTasks = controller.getCompletedTaskByUserId(currentUser.getId());
-        completedTasksId = new ArrayList<Integer>();
-        for (CompletedTask completedTask : completedTasks) {
+        lessons = mainFrameController.getLessonByCategory(taskCategory);
+        tasks = mainFrameController.getTasksByLesson(lesson);
+        completedTasks = mainFrameController.getCompletedTaskByUserId(currentUser.getId());
+        
+        completedTasksId = new ArrayList<>();
+        for (CompletedTask completedTask : completedTasks) 
             completedTasksId.add(completedTask.getTaskId());
-        }
-        
-     
+              
         // Инициализация компонентов 
-
-        menuBar = doCreateMenuBar();
-        
+        setLookAndFeel();
+        menuBar = doCreateMenuBar();       
         lessonLabel = doCreateLabel("Урок");
         taskLabel = doCreateLabel("Задание");
         lessonComboBox = new JComboBox(new ComboBoxModel(lessons));
         taskComboBox = new JComboBox(new ComboBoxModel(tasks));
-        System.out.println(completedTasksId.toString());
+
         for (int i = 0; i < tasks.size(); ++i) {
-            System.out.println(( (Task) taskComboBox.getItemAt(i) ).getId() );
-            if (completedTasksId.contains( ( (Task) taskComboBox.getItemAt(i) ).getId() ) ) {
-                //System.out.println("Yes!!" + ( (Task) taskComboBox.getItemAt(i) ).getId() );
-                //taskComboBox.getComponent(i).setBackground(Color.yellow);
-                //taskComboBox.getComponents()[i].setBackground(Color.yellow);
-                ( (Task) taskComboBox.getItemAt(i) ).setTitle("☑ " + ( (Task) taskComboBox.getItemAt(i) ).getTitle());
-            }
+            Task cTask = (Task) taskComboBox.getItemAt(i);
+            if (completedTasksId.contains( cTask.getId() ) ) 
+                cTask.setTitle("☑ " + cTask.getTitle());
         }
-        //taskComboBox.getItemCount()
-        questionScrollPane = doCreateQuestionScrollPane((!tasks.isEmpty()) 
-                ? tasks.get(0).getQuestion() : "Вопрос");
-        documentationScrollPane = doCreateDocumentationScrollPane((!tasks.isEmpty()) 
-                ? controller.getDocumentation(tasks.get(0).getIdDocumentation()).getText() : "Вопрос");
+        
+        if (!tasks.isEmpty()) {
+            Task cTask = tasks.get(0);
+            questionScrollPane = doCreateQuestionScrollPane( cTask.getQuestion() );
+            documentationScrollPane = doCreateDocumentationScrollPane( 
+                    mainFrameController.getDocumentation( cTask.getIdDocumentation() ).getText() );
+        }
+        else {
+            questionScrollPane = doCreateQuestionScrollPane("Вопрос отсутствует");
+            documentationScrollPane = doCreateDocumentationScrollPane("Документация отсутствует");
+        }
+        
         answerScrollPane = doCreateAnswerScrollPane("");
         lookButton = doCreateButton("Посмотреть");
         checkButton = doCreateButton("Проверить");
@@ -167,45 +155,25 @@ public class MainFrameView extends JFrame {
 
         
         // Добавление слушателей
-        
-        this.addComponentListener(new ComponentListener() {
-
-            @Override
-            public void componentResized(ComponentEvent ce) {
-                //questionScrollPane.setSize(Window.getFocusedWindow().getWidth()/2,questionScrollPane.getHeight());
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent ce) {
-            }
-
-            @Override
-            public void componentShown(ComponentEvent ce) {
-            }
-
-            @Override
-            public void componentHidden(ComponentEvent ce) {
-            }
-        });
-        
+ 
         lessonComboBox.addActionListener(new ActionListener() {      
             @Override
             public void actionPerformed(ActionEvent ae) {
-                addActionListenerToLessonComboBox(ae);
+                changeSelectedElementInLessonComboBox(ae);
             }
         });
         
         taskComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                addActionListenerToTaskComboBox(ae);
+                changeSelectedElementInTaskComboBox(ae);
             }
         });
         
         lookButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                addActionListenerToLookButton(ae);
+                clickLookButton(ae);
             }
         });
         
@@ -213,48 +181,15 @@ public class MainFrameView extends JFrame {
             
             @Override
             public void actionPerformed(ActionEvent ae) { 
-                String errors = null;
-                if (taskComboBox.getItemCount() != 0) {
-                    Task cTask = (Task) taskComboBox.getSelectedItem();
-                    if (cTask.getAnswer() != null) {
-                        errors = controller.isFileCompile(((JTextArea)answerScrollPane.getViewport().getView()).getText(), cTask.getImports());
-                        if (errors.isEmpty()) {
-                            errors = controller.check(cTask.getAnswer(), ((JTextArea)answerScrollPane.getViewport().getView()).getText());
-                            if (errors.isEmpty()) {
-                                CompletedTask completedTask = new CompletedTask();
-                                completedTask.setTaskId(((Task) taskComboBox.getSelectedItem()).getId());
-                                completedTask.setUserId(currentUser.getId());
-                                controller.addCompletedTask(completedTask);
-                                ( (Task) taskComboBox.getSelectedItem() ).setTitle("☑ " + ( (Task) taskComboBox.getSelectedItem() ).getTitle());
-                                JOptionPane.showMessageDialog(new JFrame(), "Решение верное!", "Ok", JOptionPane.DEFAULT_OPTION );
-                                if (taskComboBox.getItemCount() > taskComboBox.getSelectedIndex() + 1)
-                                taskComboBox.setSelectedIndex(taskComboBox.getSelectedIndex() + 1);
-                            }
-                            else
-                                JOptionPane.showMessageDialog(new JFrame(), errors, "Ошибка!", JOptionPane.DEFAULT_OPTION );
-
-                        }
-                        else
-                            JOptionPane.showMessageDialog(new JFrame(), errors, "Ошибка!", JOptionPane.DEFAULT_OPTION );
-                    }
-                    else
-                        System.out.println("На данное задание отсутствует ответ");
-                }
-                else
-                    System.out.println("Сначала выберите вопрос!");
+                clickOkButton(ae);
             }
         });
         
         // Настройка компонентов
         doSetupFrame();
         
-        
     }
-    
-    public JFrame getMainFrame() {
-        return this;
-    }
- 
+
     public void doSetupFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         setMinimumSize(new Dimension(1000, 600));
@@ -265,48 +200,37 @@ public class MainFrameView extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
+    public void setLookAndFeel() {
+        try {
+            javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException 
+                | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     public JMenuBar doCreateMenuBar() {
         
         Font font = new Font("Verdana", Font.PLAIN, 11);
          
         JMenuBar menuBar = new JMenuBar();
          
-        JMenu fileMenu = new JMenu("File");
-        fileMenu.setFont(font);
+        JMenu settingsMenu = new JMenu("Настройки");
+        settingsMenu.setFont(font);
          
-        JMenu newMenu = new JMenu("New");
-        newMenu.setFont(font);
-        fileMenu.add(newMenu);
+        JMenuItem newUser = new JMenuItem("Новый пользователь");
+        newUser.setFont(font);
+        settingsMenu.add(newUser);
+ 
+        JMenuItem changeUser = new JMenuItem("Сменить пользователя");
+        changeUser.setFont(font);
+        settingsMenu.add(changeUser);
+   
+        settingsMenu.addSeparator();
          
-        JMenuItem exampleOneItem = new JMenuItem("Example 1");
-        exampleOneItem.setFont(font);
-        newMenu.add(exampleOneItem);
-         
-        JMenuItem exampleTwoItem = new JMenuItem("Example 2");
-        exampleTwoItem.setFont(font);
-        newMenu.add(exampleTwoItem);
-         
-        JMenuItem exampleThreeItem = new JMenuItem("Example 3");
-        exampleThreeItem.setFont(font);
-        newMenu.add(exampleThreeItem);
-         
-        JMenuItem openItem = new JMenuItem("Open");
-        openItem.setFont(font);
-        fileMenu.add(openItem);
-         
-        JMenuItem closeItem = new JMenuItem("Close");
-        closeItem.setFont(font);
-        fileMenu.add(closeItem);
-         
-        JMenuItem closeAllItem = new JMenuItem("Close all");
-        closeAllItem.setFont(font);
-        fileMenu.add(closeAllItem);
-         
-        fileMenu.addSeparator();
-         
-        JMenuItem exitItem = new JMenuItem("Exit");
+        JMenuItem exitItem = new JMenuItem("Выход");
         exitItem.setFont(font);
-        fileMenu.add(exitItem);
+        settingsMenu.add(exitItem);
          
         exitItem.addActionListener(new ActionListener() {           
             public void actionPerformed(ActionEvent e) {
@@ -314,7 +238,19 @@ public class MainFrameView extends JFrame {
             }           
         });
          
-        menuBar.add(fileMenu);
+        menuBar.add(settingsMenu);
+        
+        JMenu refMenu = new JMenu("Справка");
+        
+        JMenuItem documentationItem = new JMenuItem("Документация");
+        documentationItem.setFont(font);
+        refMenu.add(documentationItem);
+        
+        JMenuItem aboutProgram = new JMenuItem("О программе");
+        aboutProgram.setFont(font);
+        refMenu.add(aboutProgram);
+        
+        menuBar.add(refMenu);
         
         return menuBar;
         
@@ -373,7 +309,7 @@ public class MainFrameView extends JFrame {
         textArea.setBorder(tBorder);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA); 
         
-        CompletionProvider provider = controller.createCompletionProvider();
+        CompletionProvider provider = mainFrameController.createCompletionProvider();
         AutoCompletion ac = new AutoCompletion(provider);
         ac.install(textArea);
 
@@ -381,48 +317,82 @@ public class MainFrameView extends JFrame {
         return scrollPane;
     } 
     
-    public void addActionListenerToLessonComboBox(ActionEvent ae) {
-        tasks = controller.getTasksByLesson(lessons.get(lessonComboBox.getSelectedIndex()).getId());
+    public void changeSelectedElementInLessonComboBox(ActionEvent ae) {
+        tasks = mainFrameController.getTasksByLesson(lessons.get(lessonComboBox.getSelectedIndex()).getId());
         taskComboBox.removeAllItems();
         ((JEditorPane)documentationScrollPane.getViewport().getView()).setText("Справочная информация по данному заданию отсутствует");
         if (!tasks.isEmpty()) {
             ((JEditorPane)questionScrollPane.getViewport().getView()).setText(tasks.get(0).getQuestion());
-            ((JEditorPane)documentationScrollPane.getViewport().getView()).setText(controller.getDocumentation(tasks.get(0).getIdDocumentation()).getText());
-            for (Task task: tasks) {
+            ((JEditorPane)documentationScrollPane.getViewport().getView()).setText(mainFrameController.getDocumentation(tasks.get(0).getIdDocumentation()).getText());
+            for (Task task: tasks)
                 taskComboBox.addItem(task);
-            }
-            System.out.println(completedTasksId.toString());
-            for (int i = 0; i < tasks.size(); ++i) {
-                System.out.println(( (Task) taskComboBox.getItemAt(i) ).getId());
-                if (completedTasksId.contains( ( (Task) taskComboBox.getItemAt(i) ).getId() ) ) {
+            for (int i = 0; i < tasks.size(); ++i) 
+                if (completedTasksId.contains( ( (Task) taskComboBox.getItemAt(i) ).getId() ) ) 
                     ( (Task) taskComboBox.getItemAt(i) ).setTitle("☑ " + ( (Task) taskComboBox.getItemAt(i) ).getTitle());
-                }
-        }
         }
     }
     
-    public void addActionListenerToTaskComboBox(ActionEvent ae) {
+    public void changeSelectedElementInTaskComboBox(ActionEvent ae) {
         if (taskComboBox.getItemCount() != 0) {
             Task cTask = (Task) taskComboBox.getSelectedItem();
-            ((JEditorPane)questionScrollPane.getViewport().getView()).setText(cTask.getQuestion());
-            ( (JEditorPane) documentationScrollPane.getViewport().getView() ).setText( controller.getDocumentation( cTask.getIdDocumentation() ).getText() );
+            ( (JEditorPane)questionScrollPane.getViewport().getView() ).setText(cTask.getQuestion());
+            ( (JEditorPane) documentationScrollPane.getViewport().getView() )
+                    .setText(mainFrameController.getDocumentation(cTask.getIdDocumentation()).getText() );
         }
         else {
-            ((JEditorPane)questionScrollPane.getViewport().getView()).setText("Вопрос отсутствует");
+            ( (JEditorPane)questionScrollPane.getViewport().getView() ).setText("Вопрос отсутствует");
             ( (JEditorPane) documentationScrollPane.getViewport().getView() ).setText( "Документация отсутствует" );
-
         }
     }
     
-    public void addActionListenerToLookButton(ActionEvent ae) {
+    public void clickLookButton(ActionEvent ae) {
         String imports = "";
-        if (taskComboBox.getSelectedItem() != null) {
-            Task cTask = (Task) taskComboBox.getSelectedItem();
-            imports = cTask.getImports();
-        }
-        controller.loadAndRunClassFromFile(((JTextArea)answerScrollPane.getViewport().getView()).getText(), imports);
+        Object o = taskComboBox.getSelectedItem();
+        if (o != null) 
+            imports = ( (Task) o ).getImports();
+        mainFrameController.loadAndRunClassFromFile( ( (JTextArea)answerScrollPane.getViewport().getView() ).getText(), imports);
     }
     
+    public void clickOkButton(ActionEvent ae) {
+        String errors = null;
+        if (taskComboBox.getItemCount() == 0) {
+            popupWindowsController.createPopupWindow(new JFrame(), "Сначала выберите вопрос!", "Ошибка!");
+            return;
+        }
+        Task cTask = (Task) taskComboBox.getSelectedItem();
+        if (mainFrameController.getCompletedTaskByUserIdByTaskId(currentUser.getId(),cTask.getId()) != null) {
+            popupWindowsController.createPopupWindow(new JFrame(), "Задание уже выполнено!", "Ошибка!");
+            return;
+        }
+            
+        if (cTask.getAnswer() == null) {
+            popupWindowsController.createPopupWindow(new JFrame(), "На данное задание отсутствует ответ", "Ошибка!");
+            return;
+        }
+        JTextArea cTextArea = (JTextArea) answerScrollPane.getViewport().getView();
+        errors = mainFrameController.isFileCompile( cTextArea.getText(), cTask.getImports() );
+        if (!errors.isEmpty()) {
+            popupWindowsController.createPopupWindow(new JFrame(), errors, "Ошибка компиляции!");
+            return;
+        }
+        errors = mainFrameController.check(cTask.getAnswer(), cTextArea.getText());
+        if (!errors.isEmpty()) {
+            popupWindowsController.createPopupWindow(new JFrame(), errors, "Ошибка выполнения задания!");
+            return;
+        }
+        
+        CompletedTask completedTask = new CompletedTask();
+        completedTask.setTaskId( cTask.getId() );
+        completedTask.setUserId(currentUser.getId());
+        mainFrameController.addCompletedTask(completedTask);
+        completedTasksId.add(cTask.getId());
+        cTask.setTitle("☑ " + cTask.getTitle());
+        ( (JTextArea)answerScrollPane.getViewport().getView() ).setText("");
+        popupWindowsController.createPopupWindow(new JFrame(), "Решение верное!", "Ok");
+        if (taskComboBox.getItemCount() > taskComboBox.getSelectedIndex() + 1)
+        taskComboBox.setSelectedIndex(taskComboBox.getSelectedIndex() + 1);
+    }
+ 
     public void componentResized(ComponentEvent event) {
         System.out.println("111");
     }

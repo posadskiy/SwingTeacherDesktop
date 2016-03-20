@@ -20,6 +20,7 @@ public interface CompletedTaskDao {
     public void deleteCompletedTask(int id) throws SQLException;
     public CompletedTask getCompletedTask(int id) throws SQLException;
     public ArrayList<CompletedTask> getCompletedTaskByUserId(int id) throws SQLException;
+    public CompletedTask getCompletedTaskByUserIdByTaskId(int userId, int taskId) throws SQLException;
     public ArrayList<CompletedTask> getAllCompletedTask() throws SQLException;
     
 }
