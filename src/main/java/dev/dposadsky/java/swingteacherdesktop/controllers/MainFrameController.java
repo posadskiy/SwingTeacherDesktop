@@ -56,7 +56,8 @@ public class MainFrameController {
     }
     
     public void startApplication() {
-        MainFrameView mainFrameView = new MainFrameView();
+        Factory factory = Factory.getInstance();
+        MainFrameView mainFrameView = factory.getMainFrameView();
     }
     
     public ArrayList<Lesson> getLessonByCategory(int taskCategory) {

@@ -33,7 +33,7 @@ public class LoginListener {
         Factory factory = Factory.getInstance();
         AuthPaneController controller = factory.getAuthPaneController();
         controller.errorSetVisible(false);
-        MainFrameView mainFrameView = new MainFrameView();    
+        MainFrameView mainFrameView = factory.getMainFrameView();    
     }
     
 }

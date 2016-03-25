@@ -87,8 +87,7 @@ public class AuthPane extends JFrame{
                 new LineBorder(Color.RED, 1, true),
                 BorderFactory.createEmptyBorder(0,0,0,0)));
         errorLabel.setVisible(false);
-        
-        
+
         loginField = new JTextField();
         loginField.setMinimumSize(new Dimension(100, 40));
         loginField.setFont(new Font("Verdana", Font.PLAIN, 20));

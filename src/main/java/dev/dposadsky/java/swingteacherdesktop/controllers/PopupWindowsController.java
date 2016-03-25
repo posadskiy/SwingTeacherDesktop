@@ -15,14 +15,27 @@ import javax.swing.JFrame;
  */
 public class PopupWindowsController {
     
-    
+    public void createPopupWindow(JFrame frame, String message, String title, int option) {
+        Factory factory = Factory.getInstance();
+        PopupWindowsView popupWindowsView = factory.getPopupWindowsView();
+        
+        popupWindowsView.createOptionPane(frame, message, title, option);
+        
+    }
     
     public void createPopupWindow(JFrame frame, String message, String title) {
-        
         Factory factory = Factory.getInstance();
         PopupWindowsView popupWindowsView = factory.getPopupWindowsView();
         
         popupWindowsView.createOptionPane(frame, message, title);
+        
+    }
+    
+    public void createPopupWindow(String message, String title) {
+        Factory factory = Factory.getInstance();
+        PopupWindowsView popupWindowsView = factory.getPopupWindowsView();
+        
+        popupWindowsView.createOptionPane(message, title);
         
     }
     

@@ -41,7 +41,7 @@ public class Factory {
     
     public static Factory instance = new Factory();
     
-    Checker checker;
+    private Checker checker;
     
     private AuthPaneController authPaneController;
     private RegistrationPaneController registrationPaneController;
@@ -116,8 +116,17 @@ public class Factory {
     }
     
     public MainFrameView getMainFrameView() {
-        if (mainFrameView == null) 
+        if (mainFrameView == null) {
             mainFrameView = new MainFrameView();
+            System.out.println(mainFrameView.toString());
+        }
+        return mainFrameView;
+    }
+    
+    public MainFrameView getMainFrameView(User user) {
+        if (mainFrameView == null) {
+            mainFrameView = new MainFrameView(user);
+        }
         return mainFrameView;
     }
     

@@ -5,6 +5,7 @@
  */
 package dev.dposadsky.java.swingteacherdesktop.views;
 
+import dev.dposadsky.java.swingteacherdesktop.controllers.PopupWindowsController;
 import dev.dposadsky.java.swingteacherdesktop.controllers.RegistrationPaneController;
 import dev.dposadsky.java.swingteacherdesktop.main.Factory;
 import java.awt.event.ActionEvent;
@@ -39,7 +40,8 @@ public class RegistrationPane extends JFrame {
     JButton cancelButton;
     
     MigLayout layout;
-    RegistrationPaneController controller;
+    RegistrationPaneController registrationPaneController;
+    PopupWindowsController popupWindowsController;
     
     public RegistrationPane() {
         initComponents();
@@ -47,7 +49,8 @@ public class RegistrationPane extends JFrame {
     
     public void initComponents() {
         Factory factory = Factory.getInstance();
-        controller = factory.getRegistrationPaneController();
+        registrationPaneController = factory.getRegistrationPaneController();
+        popupWindowsController = factory.getPopupWindowsController();
         
         layout = new MigLayout("wrap 2", "grow, fill");
         setLayout(layout);
@@ -67,19 +70,7 @@ public class RegistrationPane extends JFrame {
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                if (controller.registration(loginTextField.getText(), 
-                        String.copyValueOf(passwordField.getPassword()), 
-                        String.copyValueOf(passwordRepeatField.getPassword()), 
-                        eMailTextField.getText())) {
-                    controller.closePane();
-                    JOptionPane.showMessageDialog(new JFrame(), 
-                            "Вы зарегистрированы! Используйте введенные данные для входа", "Успешно", 
-                            JOptionPane.DEFAULT_OPTION);
-                }
-                else
-                    JOptionPane.showMessageDialog(new JFrame(), "Введены неверные данные", 
-                            "Ошибка!", JOptionPane.DEFAULT_OPTION);
-
+                registrationButtonClick();
             } 
         });
         cancelButton = new JButton("Отменить");
@@ -107,6 +98,19 @@ public class RegistrationPane extends JFrame {
         setVisible(true);
         //pack();
         setLocationRelativeTo(null);
+    }
+    
+    public void registrationButtonClick() {
+        if (registrationPaneController.registration(loginTextField.getText(), 
+                String.copyValueOf(passwordField.getPassword()), 
+                String.copyValueOf(passwordRepeatField.getPassword()), 
+                eMailTextField.getText())) {
+            registrationPaneController.closePane();
+            popupWindowsController.createPopupWindow(
+                    "Вы зарегистрированы! Используйте введенные данные для входа", "Успешно");
+        }
+        else
+            popupWindowsController.createPopupWindow("Введены неверные данные", "Ошибка!");
     }
     
     public JTextField getLoginTextField() {

@@ -9,6 +9,7 @@ import dev.dposadsky.java.swingteacherdesktop.controllers.MainFrameController;
 import dev.dposadsky.java.swingteacherdesktop.controllers.PopupWindowsController;
 import dev.dposadsky.java.swingteacherdesktop.main.Factory;
 import dev.dposadsky.java.swingteacherdesktop.models.ComboBoxModel;
+import dev.dposadsky.java.swingteacherdesktop.models.ComplexCellRenderer;
 import dev.dposadsky.java.swingteacherdesktop.tables.CompletedTask;
 import dev.dposadsky.java.swingteacherdesktop.tables.Lesson;
 import dev.dposadsky.java.swingteacherdesktop.tables.Task;
@@ -19,8 +20,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -31,7 +30,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
@@ -89,10 +87,13 @@ public class MainFrameView extends JFrame {
     }
     
     public void initComponents() {     
+        System.out.println("555");
         Factory factory = Factory.getInstance();
+        System.out.println("666");
         mainFrameController = factory.getMainFrameController();
+        System.out.println("777");
         popupWindowsController = factory.getPopupWindowsController();
-        
+        System.out.println("888");
         currentUser = mainFrameController.getCurrentUser();    
   
         taskCategory = 1;
@@ -115,10 +116,18 @@ public class MainFrameView extends JFrame {
         lessonComboBox = new JComboBox(new ComboBoxModel(lessons));
         taskComboBox = new JComboBox(new ComboBoxModel(tasks));
 
+        taskComboBox.setRenderer(new ComplexCellRenderer());
+        
+        if (currentUser.getCompleteTraining() == 0) {
+            System.out.println(taskComboBox.getEditor().getEditorComponent().getName());
+        }
+        
         for (int i = 0; i < tasks.size(); ++i) {
             Task cTask = (Task) taskComboBox.getItemAt(i);
-            if (completedTasksId.contains( cTask.getId() ) ) 
+            if (completedTasksId.contains( cTask.getId() ) )  {
+                //taskComboBox.setSelectedItem(cTask);
                 cTask.setTitle("☑ " + cTask.getTitle());
+            }
         }
         
         if (!tasks.isEmpty()) {
@@ -177,8 +186,7 @@ public class MainFrameView extends JFrame {
             }
         });
         
-        checkButton.addActionListener(new ActionListener() {
-            
+        checkButton.addActionListener(new ActionListener() {           
             @Override
             public void actionPerformed(ActionEvent ae) { 
                 clickOkButton(ae);
@@ -261,14 +269,7 @@ public class MainFrameView extends JFrame {
         
         return label;
     }
-    
-    public JComboBox doCreateComboBoxLessons(String[] text) {
-        JComboBox comboBox = new JComboBox(text);
-        
-        return comboBox;
-    }
-   
-    
+      
     public JButton doCreateButton(String text) {
         JButton button = new JButton(text);
         
@@ -320,28 +321,33 @@ public class MainFrameView extends JFrame {
     public void changeSelectedElementInLessonComboBox(ActionEvent ae) {
         tasks = mainFrameController.getTasksByLesson(lessons.get(lessonComboBox.getSelectedIndex()).getId());
         taskComboBox.removeAllItems();
-        ((JEditorPane)documentationScrollPane.getViewport().getView()).setText("Справочная информация по данному заданию отсутствует");
+        JEditorPane pane = ((JEditorPane)documentationScrollPane.getViewport().getView());
+        Task cTask = tasks.get(0);
+        pane.setText("Справочная информация по данному заданию отсутствует");
         if (!tasks.isEmpty()) {
-            ((JEditorPane)questionScrollPane.getViewport().getView()).setText(tasks.get(0).getQuestion());
-            ((JEditorPane)documentationScrollPane.getViewport().getView()).setText(mainFrameController.getDocumentation(tasks.get(0).getIdDocumentation()).getText());
+            ((JEditorPane)questionScrollPane.getViewport().getView()).setText(cTask.getQuestion());
+            pane.setText(mainFrameController.getDocumentation(cTask.getIdDocumentation()).getText());
             for (Task task: tasks)
                 taskComboBox.addItem(task);
-            for (int i = 0; i < tasks.size(); ++i) 
-                if (completedTasksId.contains( ( (Task) taskComboBox.getItemAt(i) ).getId() ) ) 
-                    ( (Task) taskComboBox.getItemAt(i) ).setTitle("☑ " + ( (Task) taskComboBox.getItemAt(i) ).getTitle());
+            for (int i = 0; i < tasks.size(); ++i)  {
+                cTask = (Task) taskComboBox.getItemAt(i) ;
+                if (completedTasksId.contains(cTask.getId() ) ) 
+                    cTask.setTitle("☑ " + cTask.getTitle());    
+            }
         }
     }
     
     public void changeSelectedElementInTaskComboBox(ActionEvent ae) {
+        JEditorPane pane = (JEditorPane) questionScrollPane.getViewport().getView();
+        JEditorPane paneDoc = (JEditorPane) documentationScrollPane.getViewport().getView();
         if (taskComboBox.getItemCount() != 0) {
             Task cTask = (Task) taskComboBox.getSelectedItem();
-            ( (JEditorPane)questionScrollPane.getViewport().getView() ).setText(cTask.getQuestion());
-            ( (JEditorPane) documentationScrollPane.getViewport().getView() )
-                    .setText(mainFrameController.getDocumentation(cTask.getIdDocumentation()).getText() );
+            pane.setText(cTask.getQuestion());
+            paneDoc.setText(mainFrameController.getDocumentation(cTask.getIdDocumentation()).getText() );
         }
         else {
-            ( (JEditorPane)questionScrollPane.getViewport().getView() ).setText("Вопрос отсутствует");
-            ( (JEditorPane) documentationScrollPane.getViewport().getView() ).setText( "Документация отсутствует" );
+            pane.setText("Вопрос отсутствует");
+            paneDoc.setText( "Документация отсутствует" );
         }
     }
     
@@ -350,34 +356,35 @@ public class MainFrameView extends JFrame {
         Object o = taskComboBox.getSelectedItem();
         if (o != null) 
             imports = ( (Task) o ).getImports();
-        mainFrameController.loadAndRunClassFromFile( ( (JTextArea)answerScrollPane.getViewport().getView() ).getText(), imports);
+        mainFrameController.loadAndRunClassFromFile( 
+                ( (JTextArea)answerScrollPane.getViewport().getView() ).getText(), imports);
     }
     
     public void clickOkButton(ActionEvent ae) {
         String errors = null;
         if (taskComboBox.getItemCount() == 0) {
-            popupWindowsController.createPopupWindow(new JFrame(), "Сначала выберите вопрос!", "Ошибка!");
+            popupWindowsController.createPopupWindow("Сначала выберите вопрос!", "Ошибка!");
             return;
         }
         Task cTask = (Task) taskComboBox.getSelectedItem();
         if (mainFrameController.getCompletedTaskByUserIdByTaskId(currentUser.getId(),cTask.getId()) != null) {
-            popupWindowsController.createPopupWindow(new JFrame(), "Задание уже выполнено!", "Ошибка!");
+            popupWindowsController.createPopupWindow("Задание уже выполнено!", "Ошибка!");
             return;
         }
             
         if (cTask.getAnswer() == null) {
-            popupWindowsController.createPopupWindow(new JFrame(), "На данное задание отсутствует ответ", "Ошибка!");
+            popupWindowsController.createPopupWindow("На данное задание отсутствует ответ", "Ошибка!");
             return;
         }
         JTextArea cTextArea = (JTextArea) answerScrollPane.getViewport().getView();
         errors = mainFrameController.isFileCompile( cTextArea.getText(), cTask.getImports() );
         if (!errors.isEmpty()) {
-            popupWindowsController.createPopupWindow(new JFrame(), errors, "Ошибка компиляции!");
+            popupWindowsController.createPopupWindow(errors, "Ошибка компиляции!");
             return;
         }
         errors = mainFrameController.check(cTask.getAnswer(), cTextArea.getText());
         if (!errors.isEmpty()) {
-            popupWindowsController.createPopupWindow(new JFrame(), errors, "Ошибка выполнения задания!");
+            popupWindowsController.createPopupWindow(errors, "Ошибка выполнения задания!");
             return;
         }
         
@@ -390,25 +397,18 @@ public class MainFrameView extends JFrame {
         ( (JTextArea)answerScrollPane.getViewport().getView() ).setText("");
         popupWindowsController.createPopupWindow(new JFrame(), "Решение верное!", "Ok");
         if (taskComboBox.getItemCount() > taskComboBox.getSelectedIndex() + 1)
-        taskComboBox.setSelectedIndex(taskComboBox.getSelectedIndex() + 1);
+            taskComboBox.setSelectedIndex(taskComboBox.getSelectedIndex() + 1);
     }
- 
-    public void componentResized(ComponentEvent event) {
-        System.out.println("111");
-    }
-    
+
     public void setUser(User user) {
         this.currentUser = user;
     }
-    
-    public static void main(String[] args) {
-        User user = new User();
-        user.setEmail("dmitry.posadsky@gmail.com");
-        user.setLastLogin(1);
-        user.setLogin("admin");
-        user.setPassword(StringUtils.md5Apache("25531094"));
-        user.setId(1);
-        MainFrameView mfv = new MainFrameView(user);
-        
+
+    public JComboBox getTaskComboBox() {
+        return taskComboBox;
+    }
+
+    public ArrayList<Integer> getCompletedTasksId() {
+        return completedTasksId;
     }
 }

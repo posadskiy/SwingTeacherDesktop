@@ -46,6 +46,9 @@ public class User implements Serializable {
     
     @Column(name = "last_login")
     private int lastLogin;
+    
+    @Column(name = "complete_training")
+    private int completeTraining;
 
     public void setId(Integer id) {
         this.id = id;
@@ -93,6 +96,14 @@ public class User implements Serializable {
 
     public void setLastLogin(int lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    public int getCompleteTraining() {
+        return completeTraining;
+    }
+
+    public void setCompleteTraining(int completeTraining) {
+        this.completeTraining = completeTraining;
     }
     
 }

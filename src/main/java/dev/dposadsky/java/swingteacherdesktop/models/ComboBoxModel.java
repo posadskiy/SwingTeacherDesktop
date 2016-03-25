@@ -21,7 +21,6 @@ public class ComboBoxModel<T> extends DefaultComboBoxModel<T> {
     @Override
     public T getSelectedItem() {
         T selectedComponent = (T) super.getSelectedItem();
-        
         return selectedComponent;
     }
     
