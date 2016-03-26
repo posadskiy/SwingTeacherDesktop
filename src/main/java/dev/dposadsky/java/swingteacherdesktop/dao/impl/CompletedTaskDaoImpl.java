@@ -121,7 +121,7 @@ public class CompletedTaskDaoImpl implements CompletedTaskDao {
                 session.close();
         }
         
-        return (completedTasks != null) ? completedTasks.get(0) : null;
+        return (!completedTasks.isEmpty()) ? completedTasks.get(0) : null;
     }
 
     @Override

@@ -15,7 +15,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 public class StringUtils {
     
     public static String removeSpace(String s) {
-        
+        if (s == null) 
+            return null;
         char[] buf = new char[1024];
         int length = s.length();
         char[] oldChars = (length < 1024) ? buf : new char[length];

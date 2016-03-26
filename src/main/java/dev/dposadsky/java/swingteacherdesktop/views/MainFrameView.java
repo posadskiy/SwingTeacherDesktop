@@ -116,11 +116,11 @@ public class MainFrameView extends JFrame {
         lessonComboBox = new JComboBox(new ComboBoxModel(lessons));
         taskComboBox = new JComboBox(new ComboBoxModel(tasks));
 
-        taskComboBox.setRenderer(new ComplexCellRenderer());
+        //taskComboBox.setRenderer(new ComplexCellRenderer());
         
-        if (currentUser.getCompleteTraining() == 0) {
-            System.out.println(taskComboBox.getEditor().getEditorComponent().getName());
-        }
+        //if (currentUser.getCompleteTraining() == 0) {
+            //System.out.println(taskComboBox.getEditor().getEditorComponent().getName());
+        //}
         
         for (int i = 0; i < tasks.size(); ++i) {
             Task cTask = (Task) taskComboBox.getItemAt(i);

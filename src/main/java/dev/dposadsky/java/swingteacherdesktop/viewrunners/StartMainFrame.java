@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dev.dposadsky.java.swingteacherdesktop.views;
+package dev.dposadsky.java.swingteacherdesktop.viewrunners;
 
 import dev.dposadsky.java.swingteacherdesktop.main.Factory;
 import dev.dposadsky.java.swingteacherdesktop.tables.User;
 import dev.dposadsky.java.swingteacherdesktop.utils.StringUtils;
+import dev.dposadsky.java.swingteacherdesktop.views.MainFrameView;
 
 /**
  *

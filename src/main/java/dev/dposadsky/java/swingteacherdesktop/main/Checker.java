@@ -21,7 +21,7 @@ public class Checker {
     
     public ArrayList<CheckerResult> check(String rSolution, String uSolution) {
         rSolution = StringUtils.removeSpace(rSolution);
-        uSolution = StringUtils.removeSpace(uSolution);
+        uSolution = uSolution.trim();
         
         ArrayList<CheckerResult> resultArray = new ArrayList<>();
         
@@ -36,37 +36,52 @@ public class Checker {
         String[] rSolutionComponents = rSolution.split(";");
         String[][] rSolutionClassesAndMethods = new String[rSolutionComponents.length][2];
         String[] uSolutionOperators = uSolution.split(";");
-        String[] uSolutionCr = new String[rSolutionComponents.length];
+        String[] uSolutionMethods = new String[rSolutionComponents.length];
+        String[] uSolutionComponentsName = new String[rSolutionComponents.length]; //?
         
         for (int i = 0; i < rSolutionComponents.length; ++i) {
-            uSolutionCr[i] = "";
+            //uSolutionMethods[i] = "";
             rSolutionClassesAndMethods[i] = rSolutionComponents[i].split("-");
-            rSolutionClassesAndMethods[i][0] = StringUtils.removeSpace(rSolutionClassesAndMethods[i][0]);
-            rSolutionClassesAndMethods[i][1] = StringUtils.removeSpace(rSolutionClassesAndMethods[i][1]);
+            //rSolutionClassesAndMethods[i][0] = StringUtils.removeSpace(rSolutionClassesAndMethods[i][0]);
+            //if (rSolutionClassesAndMethods[i].length == 2)
+                //rSolutionClassesAndMethods[i][1] = StringUtils.removeSpace(rSolutionClassesAndMethods[i][1]);
+        }
+
+        for (int i = 0; i < rSolutionComponents.length; ++i) 
+            if (checkConstructor(rSolutionClassesAndMethods[i][0], uSolution) == 1) {
+                resultArray.add(new CheckerResult(rSolutionClassesAndMethods[i][0], 3));
+                return resultArray;
+            }
+        
+        for (int i = 0; i < rSolutionComponents.length; ++i) {
+            String className = rSolutionClassesAndMethods[i][0];
+            uSolutionComponentsName[i] = uSolution.substring(uSolution.indexOf(className) + 
+                    className.length(), (uSolution.indexOf(className) + className.length()) + 
+                    uSolution.substring(uSolution.indexOf(className) + className.length()).indexOf("=")).trim();
         }
         
         for (int i = 0; i < uSolutionOperators.length; ++i) 
             uSolutionOperators[i] = StringUtils.removeSpace(uSolutionOperators[i]);
-        //System.out.println(Arrays.toString(uSolutionOperators));
         
         for (int i = 0; i < rSolutionComponents.length; ++i)
-            for (int j = 0; j < uSolutionOperators.length; ++j) {
-                if (checkComponentOperators(getItemName(rSolutionClassesAndMethods[i][0]),uSolutionOperators[j]) == 0) {
-                    uSolutionOperators[j] = uSolutionOperators[j].replaceAll(getItemName(rSolutionClassesAndMethods[i][0]) + ".", "");
-                    uSolutionCr[i] += uSolutionOperators[j] + ";";
+            for (int j = 0; j < uSolutionOperators.length; ++j) 
+                if (checkComponentOperators(uSolutionComponentsName[i],uSolutionOperators[j]) == 0) {
+                    uSolutionOperators[j] = uSolutionOperators[j].replaceAll(uSolutionComponentsName[i] + ".", "");
+                    uSolutionMethods[i] += uSolutionOperators[j] + ";";
                 }
-            }
-        //System.out.println(Arrays.toString(uSolutionOperators));
-        System.out.println(Arrays.toString(uSolutionCr));
 
-        
-        //System.out.println(Arrays.toString(rSolutionClassesAndMethods[0]));
-        //System.out.println(Arrays.toString(uSolutionCr));
         for (int i = 0; i < rSolutionComponents.length; ++i) {
-            resultArray.add(new CheckerResult(rSolutionClassesAndMethods[i][0], checkMini(rSolutionClassesAndMethods[i][1], uSolutionCr[i])));
+            if (rSolutionClassesAndMethods[i].length == 2) {
+                if (uSolutionMethods[i] == null) {
+                    resultArray.add(new CheckerResult(rSolutionClassesAndMethods[i][0], 1));
+                    return resultArray;
+                }
+                resultArray.add(new CheckerResult(rSolutionClassesAndMethods[i][0], checkMini(rSolutionClassesAndMethods[i][1], uSolutionMethods[i])));
+            }
+            else
+                if (uSolutionMethods[i] != null)
+                    resultArray.add(new CheckerResult(rSolutionClassesAndMethods[i][0], 1));
         }
-
-        //System.out.println(Arrays.toString(isRight));
         
         return resultArray;
     }
@@ -78,18 +93,20 @@ public class Checker {
             return 1;
         return 0;
     }
-
-    private String getItemName(String compName) {
-        if (compName.isEmpty())
-            return "";
-        return compName.toLowerCase().charAt(1) + compName.substring(2);
+    
+    private int checkConstructor(String compName, String userCode) {
+        String regExp = compName+"[\\s]+[\\S]+[\\s]*=[\\s]*new[\\s]+"+compName+"\\([\\s\\S]*\\);";
+        Pattern p = Pattern.compile(regExp);  
+        Matcher m = p.matcher(userCode); 
+        if (!m.matches())
+            return 1;
+        return 0;
     }
  
     public int checkMini(String rSolution, String uSolution) {
-        rSolution = StringUtils.removeSpace(rSolution);
+        (r)
+        //rSolution = StringUtils.removeSpace(rSolution);
         uSolution = StringUtils.removeSpace(uSolution);
-        //System.out.println(rSolution);
-        //System.out.println(uSolution);
         String[] rSolutionArray = rSolution.split(",");
         String[] uSolutionArray = uSolution.split(";");
         
@@ -101,21 +118,15 @@ public class Checker {
         
         int[] rightOperatorIsExist = new int[uSolutionArray.length];
         
-        for (int i = 0; i < rSolutionArray.length; ++i) {
-            
-            for (int j = 0; j < uSolutionArray.length; ++j) {
-                if (checkHelper(rSolutionArray[i], uSolutionArray[j])) {
-                    //System.out.println(checkHelper(rSolutionComponents[i], uSolutionOperators[j]));
-                    rightOperatorIsExist[i] = 1;
-                }            
-            }           
-        }
+        for (int i = 0; i < rSolutionArray.length; ++i)     
+            for (int j = 0; j < uSolutionArray.length; ++j) 
+                if (checkHelper(rSolutionArray[i], uSolutionArray[j]))
+                    rightOperatorIsExist[i] = 1;                         
 
-        for (int i = 0; i < rSolutionArray.length; ++i) {
+        for (int i = 0; i < rSolutionArray.length; ++i) 
             if (rightOperatorIsExist[i] != 1)
-                return 2; // Не все нужные определения использованы
-        }
-        
+                return 2; 
+    
         return 0;
     }
     
