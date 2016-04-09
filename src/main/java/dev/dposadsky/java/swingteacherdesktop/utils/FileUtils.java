@@ -90,51 +90,6 @@ public class FileUtils {
         }
     }
     
-    public static void loadAndRunClass(String operators, String imports) throws IOException, ClassNotFoundException, InstantiationException,
-            IllegalAccessException {
-        String fileName = "Answer.java";
-        String className = "Answer.class";
-        File[] f = new File[] { new File(fileName), new File(className) };
-        for (File file : f)
-            file.delete();
-        
-        BufferedWriter fos = new BufferedWriter(new FileWriter(fileName));
-        fos.write(  "package dev.dposadsky.java.swingteacherdesktop.utils;\n" 
-                    + "import javax.swing.*;\n"
-                    + "import java.awt.Dimension;\n"
-                    + imports
-                    + "public class Answer extends CreateFrame {\n "
-                    + "public Answer() {\n"
-                    + operators + " "
-                    + "setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);\n"    
-                    + "setPreferredSize(new Dimension(700, 400));\n"
-                    + "pack();\n"
-                    + "setLocationRelativeTo(null);\n"
-                    + "setVisible(true);\n}}");
-        fos.flush();
-        fos.close();
-        
-        JavaCompiler javac = ToolProvider.getSystemJavaCompiler();
-        StandardJavaFileManager fileManager = javac.getStandardFileManager(null, null, null);
-        DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
-        Iterable<? extends JavaFileObject> compilationUnits1 = fileManager.getJavaFileObjectsFromFiles(Arrays
-                .asList(new File[] { new File(fileName) }));
-        javac.getTask(null, fileManager, diagnostics, null, null, compilationUnits1).call();
-        String problems = "Сообщение компилятора: \n";
-        for (Diagnostic diagnostic : diagnostics.getDiagnostics())
-            problems += diagnostic + "\n";
-        fileManager.close();
-        if (new File(className).exists()) {
-            MyClassLoader loader = new MyClassLoader();
-            Class my = loader.getClassFromFile(new File(className));
-            Object o = my.newInstance();
-            CreateFrame cf = (CreateFrame) o;
-            cf.createFrame();
-        }
-        else
-            JOptionPane.showMessageDialog(new JFrame(), problems, "Ошибка компиляции", JOptionPane.DEFAULT_OPTION );
-    }
-    
     public static void runFile() throws InstantiationException, IllegalAccessException {
         String className = "Answer.class";
         if (new File(className).exists()) {
@@ -157,10 +112,11 @@ public class FileUtils {
         fos.write(  "package dev.dposadsky.java.swingteacherdesktop.utils;\n" 
                     + "import javax.swing.*;\n"
                     + "import java.awt.Dimension;\n"
-                    + imports
+                    + ((imports == null) ? "" : imports) + "\n"
                     + "public class Answer extends CreateFrame {\n "
                     + "public Answer() {\n"
-                    + operators + " "
+                    + "setTitle(\"Твой фрейм\");\n"
+                    + operators + "\n"
                     + "setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);\n"    
                     + "setPreferredSize(new Dimension(700, 400));\n"
                     + "pack();\n"

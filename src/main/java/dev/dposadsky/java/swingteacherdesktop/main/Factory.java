@@ -9,6 +9,8 @@ import dev.dposadsky.java.swingteacherdesktop.controllers.AuthPaneController;
 import dev.dposadsky.java.swingteacherdesktop.controllers.MainFrameController;
 import dev.dposadsky.java.swingteacherdesktop.controllers.PopupWindowsController;
 import dev.dposadsky.java.swingteacherdesktop.controllers.RegistrationPaneController;
+import dev.dposadsky.java.swingteacherdesktop.controllers.auth.AuthLoginService;
+import dev.dposadsky.java.swingteacherdesktop.controllers.auth.LoginListener;
 import dev.dposadsky.java.swingteacherdesktop.dao.CompletedTaskDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.DocumentationDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.ErrorDao;
@@ -25,7 +27,6 @@ import dev.dposadsky.java.swingteacherdesktop.dao.impl.LessonDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.ShorthandDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.TaskDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.UserDaoImpl;
-import dev.dposadsky.java.swingteacherdesktop.email.SenderSSL;
 import dev.dposadsky.java.swingteacherdesktop.email.SenderTLS;
 import dev.dposadsky.java.swingteacherdesktop.tables.User;
 import dev.dposadsky.java.swingteacherdesktop.views.AuthPane;
@@ -53,6 +54,9 @@ public class Factory {
     private MainFrameView mainFrameView;
     private PopupWindowsView popupWindowsView;
     
+    private LoginListener loginListener;
+    private AuthLoginService authLoginService;
+    
     private LessonDao lessonDao;
     private ShorthandDao shorthandDao;
     private TaskDao taskDao;
@@ -65,7 +69,6 @@ public class Factory {
     private User currentUser;
     
     private SenderTLS senderTLS;
-    private SenderSSL senderSSL;
     
     private Factory() { }
     
@@ -136,6 +139,18 @@ public class Factory {
         return popupWindowsView;
     }
     
+    public LoginListener getLoginListener() {
+        if (loginListener == null)
+            loginListener = new LoginListener();
+        return loginListener;
+    }
+    
+    public AuthLoginService getAuthLoginService() {
+        if (authLoginService == null) 
+            authLoginService = new AuthLoginService();
+        return authLoginService;
+    }
+    
     public LessonDao getLessonDao() {
         if (lessonDao == null) 
             lessonDao = new LessonDaoImpl();
@@ -200,9 +215,4 @@ public class Factory {
         return senderTLS;
     }
     
-    public SenderSSL getSenderSSL() {
-        if (senderSSL == null) 
-            senderSSL = new SenderSSL("swingteacherru@gmail.com","{ee78$@oj3X9R2");
-        return senderSSL;
-    }
 }

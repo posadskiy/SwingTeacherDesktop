@@ -19,7 +19,6 @@ import dev.dposadsky.java.swingteacherdesktop.views.RegistrationPane;
 public class AuthPaneController {
     
     private Factory factory;
-    private UserDao userDao;
     
     LoginListener loginListenerImpl;
     AuthLoginService authLoginService;
@@ -28,10 +27,9 @@ public class AuthPaneController {
     
     public void okClickButton(String login, String pass) {
         factory = Factory.getInstance();
-        userDao = factory.getUserDao();
         
-        loginListenerImpl = new LoginListener();
-        authLoginService = new AuthLoginService();
+        loginListenerImpl = factory.getLoginListener();
+        authLoginService = factory.getAuthLoginService();
         if (authLoginService.authenticate(login, pass)) {
             factory.getAuthPane().setVisible(false);
             loginListenerImpl.loginSucceeded();
@@ -43,7 +41,7 @@ public class AuthPaneController {
     
     public void registrationPaneSetVisible(boolean b) {
         if (registrationPane == null)
-            registrationPane = new RegistrationPane();
+            registrationPane = factory.getRegistrationPane();
         registrationPane.setVisible(b);
     }
     

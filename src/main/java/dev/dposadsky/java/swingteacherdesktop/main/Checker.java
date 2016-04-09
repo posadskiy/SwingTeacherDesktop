@@ -39,13 +39,8 @@ public class Checker {
         String[] uSolutionMethods = new String[rSolutionComponents.length];
         String[] uSolutionComponentsName = new String[rSolutionComponents.length]; //?
         
-        for (int i = 0; i < rSolutionComponents.length; ++i) {
-            //uSolutionMethods[i] = "";
+        for (int i = 0; i < rSolutionComponents.length; ++i) 
             rSolutionClassesAndMethods[i] = rSolutionComponents[i].split("-");
-            //rSolutionClassesAndMethods[i][0] = StringUtils.removeSpace(rSolutionClassesAndMethods[i][0]);
-            //if (rSolutionClassesAndMethods[i].length == 2)
-                //rSolutionClassesAndMethods[i][1] = StringUtils.removeSpace(rSolutionClassesAndMethods[i][1]);
-        }
 
         for (int i = 0; i < rSolutionComponents.length; ++i) 
             if (checkConstructor(rSolutionClassesAndMethods[i][0], uSolution) == 1) {
@@ -55,9 +50,11 @@ public class Checker {
         
         for (int i = 0; i < rSolutionComponents.length; ++i) {
             String className = rSolutionClassesAndMethods[i][0];
-            uSolutionComponentsName[i] = uSolution.substring(uSolution.indexOf(className) + 
-                    className.length(), (uSolution.indexOf(className) + className.length()) + 
-                    uSolution.substring(uSolution.indexOf(className) + className.length()).indexOf("=")).trim();
+            int length = uSolution.indexOf(className) + className.length();
+            uSolutionComponentsName[i] = uSolution.substring(length, length + 
+                    uSolution.substring(length).indexOf("=")).trim();
+            uSolution = uSolution.replaceFirst(className + "[\\s]+" + uSolutionComponentsName[i] + "[\\s]*=[\\s]*new[\\s]+"+className+"\\(\\);", "");
+            //uSolution = uSolution.replace(className + "[\\s]+" + uSolutionComponentsName[i] + "[\\s]*=[\\s]*new[\\s]+"+className+"\\([\\s\\S]*\\);" , "");
         }
         
         for (int i = 0; i < uSolutionOperators.length; ++i) 
@@ -67,16 +64,21 @@ public class Checker {
             for (int j = 0; j < uSolutionOperators.length; ++j) 
                 if (checkComponentOperators(uSolutionComponentsName[i],uSolutionOperators[j]) == 0) {
                     uSolutionOperators[j] = uSolutionOperators[j].replaceAll(uSolutionComponentsName[i] + ".", "");
-                    uSolutionMethods[i] += uSolutionOperators[j] + ";";
+                    if (uSolutionMethods[i] == null)
+                        uSolutionMethods[i] = uSolutionOperators[j] + ";";
+                    else
+                        uSolutionMethods[i] += uSolutionOperators[j] + ";";
                 }
 
         for (int i = 0; i < rSolutionComponents.length; ++i) {
             if (rSolutionClassesAndMethods[i].length == 2) {
+                System.out.println(Arrays.toString(uSolutionMethods));
                 if (uSolutionMethods[i] == null) {
-                    resultArray.add(new CheckerResult(rSolutionClassesAndMethods[i][0], 1));
+                    resultArray.add(new CheckerResult(rSolutionClassesAndMethods[i][0], 2));
                     return resultArray;
                 }
-                resultArray.add(new CheckerResult(rSolutionClassesAndMethods[i][0], checkMini(rSolutionClassesAndMethods[i][1], uSolutionMethods[i])));
+                resultArray.add(new CheckerResult(rSolutionClassesAndMethods[i][0], 
+                        checkMini(rSolutionClassesAndMethods[i][1], uSolutionMethods[i])));
             }
             else
                 if (uSolutionMethods[i] != null)
@@ -104,7 +106,6 @@ public class Checker {
     }
  
     public int checkMini(String rSolution, String uSolution) {
-        (r)
         //rSolution = StringUtils.removeSpace(rSolution);
         uSolution = StringUtils.removeSpace(uSolution);
         String[] rSolutionArray = rSolution.split(",");
@@ -133,17 +134,13 @@ public class Checker {
     public boolean checkHelper(String r, String u) {
         Pattern p = Pattern.compile("^"+r+"\\([\\s\\S]*\\)$");  
         Matcher m = p.matcher(u); 
-        if (!m.matches())
-            return false;        
-        return true;
+        return m.matches();
     }
     
     public boolean checkLogin(String login) {
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9_]{3,20}$");  
         Matcher m = pattern.matcher(login); 
-        if (!m.matches())
-            return false;        
-        return true;
+        return m.matches();
     }
     
     public boolean checkPassword(String password, String passwordRepeat) {
@@ -151,9 +148,7 @@ public class Checker {
         Matcher m = pattern.matcher(password); 
         if (!m.matches())
             return false;        
-        if (checkPasswordMatch(password, passwordRepeat))
-            return true;
-        return false;
+        return checkPasswordMatch(password, passwordRepeat);
     }
     
     private boolean checkPasswordMatch(String password, String passwordRepeat) {
@@ -163,9 +158,7 @@ public class Checker {
     public boolean checkEMail(String eMail) {
         Pattern pattern = Pattern.compile("^.+@.+\\..+$");  
         Matcher m = pattern.matcher(eMail); 
-        if (!m.matches())
-            return false;        
-        return true;
+        return m.matches();
     }
     
     public boolean isNumeric(String s) {
