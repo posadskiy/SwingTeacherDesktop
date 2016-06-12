@@ -52,14 +52,8 @@ public class MainFrameController {
     private ErrorDao errorDao;
     private KeywordDao keywordDao;
     
-    public MainFrameController() {
-    }
-    
-    public void startApplication() {
-        Factory factory = Factory.getInstance();
-        MainFrameView mainFrameView = factory.getMainFrameView();
-    }
-    
+    public MainFrameController() { }
+  
     public ArrayList<Lesson> getLessonByCategory(int taskCategory) {
         factory = Factory.getInstance();
         lessonDao = factory.getLessonDao();
@@ -178,13 +172,17 @@ public class MainFrameController {
     
     public String check(String rightAnswer, String userAnswer) {
         Checker checker = new Checker();
-        String errors = ""; //Если здесь null, то при += он превращается в "null"
         ArrayList<CheckerResult> checkerResults = checker.check(rightAnswer, userAnswer);
+        StringBuilder errors = new StringBuilder();
         for (CheckerResult checkerResult : checkerResults) {
             if (checkerResult.getErrorCode() != 0)
-                errors += "Ошибка в компоненте " + checkerResult.getClassName() + ". " + getError(checkerResult.getErrorCode()).getErrorText() + "\n";
+                errors.append("Ошибка в компоненте ")
+                        .append( checkerResult.getClassName() )
+                        .append(". ")
+                        .append( getError( checkerResult.getErrorCode() ).getErrorText() )
+                        .append("\n");
         }
-        return errors;
+        return errors.toString();
     }
     
     public ArrayList<Keyword> getKeywords() {

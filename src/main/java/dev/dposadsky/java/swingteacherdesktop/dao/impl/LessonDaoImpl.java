@@ -113,7 +113,9 @@ public class LessonDaoImpl implements LessonDao {
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
-            lessons = (ArrayList<Lesson>) session.createCriteria(Lesson.class).add(Restrictions.eq("idTaskCategory", new Integer(category))).addOrder(Order.asc("lessonNumber")).list();
+            lessons = (ArrayList<Lesson>) session.createCriteria(Lesson.class)
+                    .add( Restrictions.eq("idTaskCategory", category) )
+                    .addOrder(Order.asc("lessonNumber")).list();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

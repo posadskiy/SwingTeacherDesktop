@@ -85,13 +85,9 @@ public class MainFrameView extends JFrame {
     }
     
     public void initComponents() {     
-        System.out.println("555");
         Factory factory = Factory.getInstance();
-        System.out.println("666");
         mainFrameController = factory.getMainFrameController();
-        System.out.println("777");
         popupWindowsController = factory.getPopupWindowsController();
-        System.out.println("888");
         currentUser = mainFrameController.getCurrentUser();    
   
         taskCategory = 1;
@@ -111,8 +107,15 @@ public class MainFrameView extends JFrame {
         menuBar = doCreateMenuBar();       
         lessonLabel = doCreateLabel("Урок");
         taskLabel = doCreateLabel("Задание");
+        
+        lessonLabel.setFont(new Font("Times New Roman", Font.BOLD, 16));
+        taskLabel.setFont(new Font("Times New Roman", Font.BOLD, 16));
+        
         lessonComboBox = new JComboBox(new ComboBoxModel(lessons));
         taskComboBox = new JComboBox(new ComboBoxModel(tasks));
+        
+        lessonComboBox.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        taskComboBox.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 
         //taskComboBox.setRenderer(new ComplexCellRenderer());
         
@@ -320,9 +323,10 @@ public class MainFrameView extends JFrame {
         tasks = mainFrameController.getTasksByLesson(lessons.get(lessonComboBox.getSelectedIndex()).getId());
         taskComboBox.removeAllItems();
         JEditorPane pane = ((JEditorPane)documentationScrollPane.getViewport().getView());
-        Task cTask = tasks.get(0);
+        Task cTask = null;
         pane.setText("Справочная информация по данному заданию отсутствует");
         if (!tasks.isEmpty()) {
+            cTask = tasks.get(0);
             ((JEditorPane)questionScrollPane.getViewport().getView()).setText(cTask.getQuestion());
             pane.setText(mainFrameController.getDocumentation(cTask.getIdDocumentation()).getText());
             for (Task task: tasks)

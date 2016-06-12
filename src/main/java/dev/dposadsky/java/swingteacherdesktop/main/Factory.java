@@ -40,7 +40,7 @@ import dev.dposadsky.java.swingteacherdesktop.views.RegistrationPane;
  */
 public class Factory {
     
-    public static Factory instance = new Factory();
+    public static final Factory instance = new Factory();
     
     private Checker checker;
     

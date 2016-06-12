@@ -92,7 +92,7 @@ public class RegistrationPane extends JFrame {
     }
     
     public void doSetupFrame() {
-        setTitle("Авторизация");
+        setTitle("Регистрация");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setSize(350, 200);
         setVisible(true);

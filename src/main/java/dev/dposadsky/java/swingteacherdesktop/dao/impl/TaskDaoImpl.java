@@ -114,7 +114,7 @@ public class TaskDaoImpl implements TaskDao {
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             tasks = (ArrayList<Task>) session.createCriteria(Task.class)
-                    .add(Restrictions.eq("idLesson", new Integer(lesson)))
+                    .add(Restrictions.eq("idLesson", lesson))
                     .addOrder(Order.asc("taskNumber")).list();
         } catch (Exception e) {
             e.printStackTrace();

@@ -93,7 +93,7 @@ public class CompletedTaskDaoImpl implements CompletedTaskDao {
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             completedTasks = (ArrayList<CompletedTask>) session.createCriteria(CompletedTask.class)
-                    .add(Restrictions.eq("userId", new Integer(id))).list();
+                    .add( Restrictions.eq("userId", Integer.valueOf(id)) ).list();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -112,8 +112,8 @@ public class CompletedTaskDaoImpl implements CompletedTaskDao {
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             completedTasks = (ArrayList<CompletedTask>) session.createCriteria(CompletedTask.class)
-                    .add(Restrictions.eq("userId", new Integer(userId)))
-                    .add(Restrictions.eq("taskId", new Integer(taskId))).list();
+                    .add( Restrictions.eq("userId", userId) )
+                    .add( Restrictions.eq("taskId", taskId) ).list();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

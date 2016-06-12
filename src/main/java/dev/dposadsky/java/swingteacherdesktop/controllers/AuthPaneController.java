@@ -20,10 +20,10 @@ public class AuthPaneController {
     
     private Factory factory;
     
-    LoginListener loginListenerImpl;
-    AuthLoginService authLoginService;
+    private LoginListener loginListenerImpl;
+    private AuthLoginService authLoginService;
     
-    RegistrationPane registrationPane;
+    private RegistrationPane registrationPane;
     
     public void okClickButton(String login, String pass) {
         factory = Factory.getInstance();
@@ -40,8 +40,8 @@ public class AuthPaneController {
     }
     
     public void registrationPaneSetVisible(boolean b) {
-        if (registrationPane == null)
-            registrationPane = factory.getRegistrationPane();
+        factory = Factory.getInstance();
+        registrationPane = factory.getRegistrationPane();
         registrationPane.setVisible(b);
     }
     

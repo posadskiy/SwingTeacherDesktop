@@ -52,9 +52,8 @@ public class Checker {
             String className = rSolutionClassesAndMethods[i][0];
             int length = uSolution.indexOf(className) + className.length();
             uSolutionComponentsName[i] = uSolution.substring(length, length + 
-                    uSolution.substring(length).indexOf("=")).trim();
+                    uSolution.substring(length).indexOf('=')).trim();
             uSolution = uSolution.replaceFirst(className + "[\\s]+" + uSolutionComponentsName[i] + "[\\s]*=[\\s]*new[\\s]+"+className+"\\(\\);", "");
-            //uSolution = uSolution.replace(className + "[\\s]+" + uSolutionComponentsName[i] + "[\\s]*=[\\s]*new[\\s]+"+className+"\\([\\s\\S]*\\);" , "");
         }
         
         for (int i = 0; i < uSolutionOperators.length; ++i) 
@@ -72,7 +71,6 @@ public class Checker {
 
         for (int i = 0; i < rSolutionComponents.length; ++i) {
             if (rSolutionClassesAndMethods[i].length == 2) {
-                System.out.println(Arrays.toString(uSolutionMethods));
                 if (uSolutionMethods[i] == null) {
                     resultArray.add(new CheckerResult(rSolutionClassesAndMethods[i][0], 2));
                     return resultArray;
@@ -148,10 +146,6 @@ public class Checker {
         Matcher m = pattern.matcher(password); 
         if (!m.matches())
             return false;        
-        return checkPasswordMatch(password, passwordRepeat);
-    }
-    
-    private boolean checkPasswordMatch(String password, String passwordRepeat) {
         return password.equals(passwordRepeat);
     }
     

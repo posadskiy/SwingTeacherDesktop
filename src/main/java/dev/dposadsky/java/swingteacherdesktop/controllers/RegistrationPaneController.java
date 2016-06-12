@@ -14,9 +14,7 @@ import dev.dposadsky.java.swingteacherdesktop.utils.StringUtils;
 import dev.dposadsky.java.swingteacherdesktop.views.RegistrationPane;
 import java.awt.Color;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -77,7 +75,10 @@ public class RegistrationPaneController {
             return false;
           
         SenderTLS sender = factory.getSenderTLS();
-        int randomCode = (int) (Math.random()*10000000);
+        Random random = new Random();
+        int randomCode = 0;
+        while (randomCode < 10000000)
+            randomCode = random.nextInt(99999999);
         sender.send("Регистрация", "Ваш код: " + randomCode, "swingteacherru@gmail.com", eMail);
         
         String returnString = (JOptionPane.showInputDialog(new JFrame(), 

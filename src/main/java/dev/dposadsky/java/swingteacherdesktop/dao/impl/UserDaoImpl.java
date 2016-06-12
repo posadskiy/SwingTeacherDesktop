@@ -109,7 +109,9 @@ public class UserDaoImpl implements UserDao {
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
-            users = (ArrayList<User>) session.createCriteria(User.class).add(Restrictions.eq("login", login)).add(Restrictions.eq("password", pass)).list();
+            users = (ArrayList<User>) session.createCriteria(User.class)
+                    .add(Restrictions.eq("login", login))
+                    .add(Restrictions.eq("password", pass)).list();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
