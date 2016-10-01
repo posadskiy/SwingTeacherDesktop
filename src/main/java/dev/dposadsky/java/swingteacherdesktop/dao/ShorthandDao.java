@@ -6,8 +6,9 @@
 package dev.dposadsky.java.swingteacherdesktop.dao;
 
 import dev.dposadsky.java.swingteacherdesktop.tables.Shorthand;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,6 +20,6 @@ public interface ShorthandDao {
     public void deleteShorthand(Shorthand shorthand) throws SQLException;
     public void deleteShorthand(int id) throws SQLException;
     public Shorthand getShorthand(int id) throws SQLException;
-    public ArrayList<Shorthand> getAllShorthands() throws SQLException;
+    public List<Shorthand> getAllShorthands() throws SQLException;
     
 }

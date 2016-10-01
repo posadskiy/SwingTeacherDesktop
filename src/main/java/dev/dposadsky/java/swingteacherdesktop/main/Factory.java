@@ -27,6 +27,7 @@ import dev.dposadsky.java.swingteacherdesktop.dao.impl.LessonDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.ShorthandDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.TaskDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.impl.UserDaoImpl;
+import dev.dposadsky.java.swingteacherdesktop.dao.mock.*;
 import dev.dposadsky.java.swingteacherdesktop.email.SenderTLS;
 import dev.dposadsky.java.swingteacherdesktop.tables.User;
 import dev.dposadsky.java.swingteacherdesktop.views.AuthPane;
@@ -153,49 +154,49 @@ public class Factory {
     
     public LessonDao getLessonDao() {
         if (lessonDao == null) 
-            lessonDao = new LessonDaoImpl();
+            lessonDao = new LessonDaoMock();
         return lessonDao;
     }
     
     public ShorthandDao getShorthandDao() {
         if (shorthandDao == null) 
-            shorthandDao = new ShorthandDaoImpl();
+            shorthandDao = new ShorthandDaoMock();
         return shorthandDao;
     }
     
     public TaskDao getTaskDao() {
         if (taskDao == null) 
-            taskDao = new TaskDaoImpl();
+            taskDao = new TaskDaoMock();
         return taskDao;
     }
     
     public DocumentationDao getDocumentationDao() {
         if (documentationDao == null) 
-            documentationDao = new DocumentationDaoImpl();
+            documentationDao = new DocumentationDaoMock();
         return documentationDao;
     }
     
     public ErrorDao getErrorDao() {
         if (errorDao == null) 
-            errorDao = new ErrorDaoImpl();
+            errorDao = new ErrorDaoMock();
         return errorDao;
     }
     
     public KeywordDao getKeywordDao() {
         if (keywordDao == null) 
-            keywordDao = new KeywordDaoImpl();
+            keywordDao = new KeywordDaoMock();
         return keywordDao;
     }
     
     public UserDao getUserDao() {
         if (userDao == null) 
-            userDao = new UserDaoImpl();
+            userDao = new UserDaoMock();
         return userDao;
     }
     
     public CompletedTaskDao getCompletedTaskDao() {
         if (completedTaskDao == null) 
-            completedTaskDao = new CompletedTaskDaoImpl();
+            completedTaskDao = new CompletedTaskDaoMock();
         return completedTaskDao;
     }
     

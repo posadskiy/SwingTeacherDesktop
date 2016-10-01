@@ -6,20 +6,17 @@
 package dev.dposadsky.java.swingteacherdesktop.dao;
 
 import dev.dposadsky.java.swingteacherdesktop.tables.Task;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author DPosadsky
- */
 public interface TaskDao {
     
     public void addTask(Task task) throws SQLException;
     public void deleteTask(Task task) throws SQLException;
     public void deleteTask(int id) throws SQLException;
     public Task getTask(int id) throws SQLException;
-    public ArrayList<Task> getTasks() throws SQLException;
-    public ArrayList<Task> getTasksByLesson(int lesson) throws SQLException;
+    public List<Task> getTasks() throws SQLException;
+    public List<Task> getTasksByLesson(int lesson) throws SQLException;
+
 }

@@ -10,6 +10,8 @@ import dev.dposadsky.java.swingteacherdesktop.tables.User;
 import dev.dposadsky.java.swingteacherdesktop.utils.HibernateUtils;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
@@ -105,7 +107,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByLoginAndPassword(String login, String pass) throws SQLException {
-        ArrayList<User> users = null;
+        List<User> users = null;
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();

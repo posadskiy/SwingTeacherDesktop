@@ -6,8 +6,9 @@
 package dev.dposadsky.java.swingteacherdesktop.dao;
 
 import dev.dposadsky.java.swingteacherdesktop.tables.Error;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,6 +20,6 @@ public interface ErrorDao {
     public void deleteError(Error error) throws SQLException;
     public void deleteError(int id) throws SQLException;
     public Error getError(int id) throws SQLException;
-    public ArrayList<Error> getAllErrors() throws SQLException;
+    public List<Error> getAllErrors() throws SQLException;
     
 }
