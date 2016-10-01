@@ -6,8 +6,9 @@
 package dev.dposadsky.java.swingteacherdesktop.dao;
 
 import dev.dposadsky.java.swingteacherdesktop.tables.Documentation;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,6 +20,6 @@ public interface DocumentationDao {
     public void deleteDocumentation(Documentation documentation) throws SQLException;
     public void deleteDocumentation(int id) throws SQLException;
     public Documentation getDocumentation(int id) throws SQLException;
-    public ArrayList<Documentation> getAllDocumentation() throws SQLException;
+    public List<Documentation> getAllDocumentation() throws SQLException;
     
 }

@@ -6,8 +6,9 @@
 package dev.dposadsky.java.swingteacherdesktop.dao;
 
 import dev.dposadsky.java.swingteacherdesktop.tables.CompletedTask;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,8 +20,8 @@ public interface CompletedTaskDao {
     public void deleteCompletedTask(CompletedTask completedTask) throws SQLException;
     public void deleteCompletedTask(int id) throws SQLException;
     public CompletedTask getCompletedTask(int id) throws SQLException;
-    public ArrayList<CompletedTask> getCompletedTaskByUserId(int id) throws SQLException;
+    public List<CompletedTask> getCompletedTaskByUserId(int id) throws SQLException;
     public CompletedTask getCompletedTaskByUserIdByTaskId(int userId, int taskId) throws SQLException;
-    public ArrayList<CompletedTask> getAllCompletedTask() throws SQLException;
+    public List<CompletedTask> getAllCompletedTask() throws SQLException;
     
 }

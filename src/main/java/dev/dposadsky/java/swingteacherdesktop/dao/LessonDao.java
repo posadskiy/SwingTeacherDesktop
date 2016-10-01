@@ -6,8 +6,9 @@
 package dev.dposadsky.java.swingteacherdesktop.dao;
 
 import dev.dposadsky.java.swingteacherdesktop.tables.Lesson;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,7 +20,7 @@ public interface LessonDao {
     public void deleteLesson(Lesson lesson) throws SQLException;
     public void deleteLesson(int id) throws SQLException;
     public Lesson getLesson(int id) throws SQLException;
-    public ArrayList<Lesson> getAllLessons() throws SQLException;
-    public ArrayList<Lesson> getLessonsByCategory(int category) throws SQLException;
+    public List<Lesson> getAllLessons() throws SQLException;
+    public List<Lesson> getLessonsByCategory(int category) throws SQLException;
     
 }

@@ -13,10 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- *
- * @author DPosadsky
- */
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
@@ -30,7 +26,7 @@ public class User implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     
     @Column(name = "email")
     private String email;
@@ -42,19 +38,19 @@ public class User implements Serializable {
     private String password;
     
     @Column(name = "logins")
-    private int logins;
+    private Integer logins;
     
     @Column(name = "last_login")
-    private int lastLogin;
+    private Integer lastLogin;
     
     @Column(name = "complete_training")
-    private int completeTraining;
+    private Boolean completeTraining;
 
     public void setId(Integer id) {
         this.id = id;
     }
     
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -82,27 +78,27 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public int getLogins() {
+    public Integer getLogins() {
         return logins;
     }
 
-    public void setLogins(int logins) {
+    public void setLogins(Integer logins) {
         this.logins = logins;
     }
 
-    public int getLastLogin() {
+    public Integer getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(int lastLogin) {
+    public void setLastLogin(Integer lastLogin) {
         this.lastLogin = lastLogin;
     }
 
-    public int getCompleteTraining() {
+    public Boolean getCompleteTraining() {
         return completeTraining;
     }
 
-    public void setCompleteTraining(int completeTraining) {
+    public void setCompleteTraining(Boolean completeTraining) {
         this.completeTraining = completeTraining;
     }
     

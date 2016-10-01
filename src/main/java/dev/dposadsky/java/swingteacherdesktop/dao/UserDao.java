@@ -7,8 +7,9 @@ package dev.dposadsky.java.swingteacherdesktop.dao;
 
 
 import dev.dposadsky.java.swingteacherdesktop.tables.User;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,6 +22,6 @@ public interface UserDao {
     public void deleteUser(int id) throws SQLException;
     public User getUserById(int id) throws SQLException;
     public User getUserByLoginAndPassword(String login, String pass) throws SQLException;
-    public ArrayList<User> getUsers() throws SQLException;
+    public List<User> getUsers() throws SQLException;
     
 }

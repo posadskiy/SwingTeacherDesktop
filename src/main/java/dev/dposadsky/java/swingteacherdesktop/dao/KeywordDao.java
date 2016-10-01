@@ -6,8 +6,9 @@
 package dev.dposadsky.java.swingteacherdesktop.dao;
 
 import dev.dposadsky.java.swingteacherdesktop.tables.Keyword;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,6 +20,6 @@ public interface KeywordDao {
     public void deleteKeyword(Keyword keyword) throws SQLException;
     public void deleteKeyword(int id) throws SQLException;
     public Keyword getKeyword(int id) throws SQLException;
-    public ArrayList<Keyword> getAllKeywords() throws SQLException;
+    public List<Keyword> getAllKeywords() throws SQLException;
     
 }
