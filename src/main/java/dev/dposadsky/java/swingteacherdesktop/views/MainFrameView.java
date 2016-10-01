@@ -80,7 +80,8 @@ public class MainFrameView extends JFrame {
     * Using in psvm
     */
     public MainFrameView(User user) {
-        this.currentUser = user;
+        Factory factory = Factory.getInstance();
+        factory.setCurrentUser(user);
         initComponents();
     }
     
@@ -88,7 +89,7 @@ public class MainFrameView extends JFrame {
         Factory factory = Factory.getInstance();
         mainFrameController = factory.getMainFrameController();
         popupWindowsController = factory.getPopupWindowsController();
-        currentUser = mainFrameController.getCurrentUser();    
+        currentUser = factory.getCurrentUser();    
   
         taskCategory = 1;
         lesson = 0;
@@ -374,10 +375,12 @@ public class MainFrameView extends JFrame {
             return;
         }
             
+        /*
         if (cTask.getAnswer() == null) {
             popupWindowsController.createPopupWindow("На данное задание отсутствует ответ", "Ошибка!");
             return;
         }
+        */
         JTextArea cTextArea = (JTextArea) answerScrollPane.getViewport().getView();
         errors = mainFrameController.isFileCompile( cTextArea.getText(), cTask.getImports() );
         if (!errors.isEmpty()) {

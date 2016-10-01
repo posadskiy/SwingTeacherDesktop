@@ -233,11 +233,4 @@ public class MainFrameController {
         
         return provider;     
     }
-    
-    
-    
-    public User getCurrentUser() {
-        factory = Factory.getInstance();
-        return factory.getCurrentUser();
-    }
 }

@@ -6,13 +6,11 @@
 package dev.dposadsky.java.swingteacherdesktop.utils;
 
 import java.awt.BorderLayout;
-import java.awt.Insets;
-import javax.swing.ImageIcon;
+import java.awt.GridLayout;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-
 
 /**
  *
@@ -22,24 +20,24 @@ public class Test {
     
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        JButton button = new JButton("Jessy", new ImageIcon("res/img/button/original.png"));
-        //button.setPressedIcon(new ImageIcon("res/img/button/pressed.png"));
-        button.setRolloverIcon(new ImageIcon("res/img/button/1.jpg"));
-        //button.setDisabledIcon(new ImageIcon("res/img/button/1.jpg"));
-        //button.setDisabledSelectedIcon(new ImageIcon("res/img/button/1.jpg"));
-        //button.setRolloverSelectedIcon(null);
-        button.setIconTextGap(400);
-        //button.setEnabled(false);
-        //button.setSelected(true);
-        button.setHorizontalAlignment(SwingConstants.LEFT);
-        button.setMargin(new Insets(200, 200, 200, 200));
-        button.setFocusPainted(false);
-        button.setBorderPainted(true);
+        JButton button = new JButton();
+        JButton button2 = new JButton();
         
-        BorderLayout layout = new BorderLayout();
-        frame.setLayout(layout);
-        frame.add(button, BorderLayout.NORTH);
-        //frame.setSize(500, 500);
+        button.setText("Button1");
+        button2.setText("Button2");
+        
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setVerticalAlignment(SwingConstants.CENTER);
+        
+        button2.setHorizontalAlignment(SwingConstants.RIGHT);
+        button2.setVerticalAlignment(SwingConstants.BOTTOM);
+
+        
+        GridLayout borderLayout = new GridLayout(1,2);
+        frame.setLayout(borderLayout);
+        frame.add(button);
+        frame.add(button2);
+        frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }

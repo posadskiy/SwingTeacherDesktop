@@ -205,7 +205,7 @@ public class Factory {
         return currentUser;
     }
     
-    public void serCurrentUser(User user) {
+    public void setCurrentUser(User user) {
         currentUser = user;
     }
     

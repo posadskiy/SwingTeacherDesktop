@@ -20,18 +20,21 @@ import java.util.regex.Pattern;
 public class Checker {
     
     public ArrayList<CheckerResult> check(String rSolution, String uSolution) {
-        rSolution = StringUtils.removeSpace(rSolution);
-        uSolution = uSolution.trim();
-        
         ArrayList<CheckerResult> resultArray = new ArrayList<>();
         
         if (rSolution == null)
             if (uSolution == null)
                 return resultArray;
-            else {
-                resultArray.add(new CheckerResult("Решение", 1));
-                return resultArray;         
-            }
+ 
+        if (rSolution != null)
+            rSolution = StringUtils.removeSpace(rSolution);
+        if (uSolution != null)
+            uSolution = uSolution.trim();
+        
+        if (rSolution.isEmpty())
+            if (uSolution.isEmpty())
+                return resultArray;
+
         
         String[] rSolutionComponents = rSolution.split(";");
         String[][] rSolutionClassesAndMethods = new String[rSolutionComponents.length][2];
@@ -95,7 +98,7 @@ public class Checker {
     }
     
     private int checkConstructor(String compName, String userCode) {
-        String regExp = compName+"[\\s]+[\\S]+[\\s]*=[\\s]*new[\\s]+"+compName+"\\([\\s\\S]*\\);";
+        String regExp = "[\\s]*"+compName+"[\\s]+[\\S]+[\\s]*=[\\s]*new[\\s]+"+compName+"\\([\\s\\S]*\\);[\\s]*";
         Pattern p = Pattern.compile(regExp);  
         Matcher m = p.matcher(userCode); 
         if (!m.matches())

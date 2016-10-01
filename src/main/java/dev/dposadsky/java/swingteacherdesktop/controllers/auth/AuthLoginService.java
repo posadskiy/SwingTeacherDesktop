@@ -33,7 +33,7 @@ public class AuthLoginService {
         if (user == null)
             return false;
         
-        factory.serCurrentUser(user);
+        factory.setCurrentUser(user);
         
         return true;
     }
