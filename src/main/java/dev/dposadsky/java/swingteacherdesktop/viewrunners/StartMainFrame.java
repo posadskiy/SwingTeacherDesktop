@@ -10,12 +10,8 @@ import dev.dposadsky.java.swingteacherdesktop.tables.User;
 import dev.dposadsky.java.swingteacherdesktop.utils.StringUtils;
 import dev.dposadsky.java.swingteacherdesktop.views.MainFrameView;
 
-/**
- *
- * @author DPosadsky
- */
 public class StartMainFrame {
-    
+
     public static void main(String[] args) {
         User user = new User();
         user.setEmail("dmitry.posadsky@gmail.com");
@@ -24,7 +20,7 @@ public class StartMainFrame {
         user.setPassword(StringUtils.md5Apache("25531094"));
         user.setId(1);
         Factory factory = Factory.getInstance();
-        MainFrameView mfv = factory.getMainFrameView(user);      
+        MainFrameView mfv = factory.getMainFrameView(user);
     }
-    
+
 }
