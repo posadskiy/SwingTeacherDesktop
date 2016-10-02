@@ -1,5 +1,6 @@
 package dev.dposadsky.java.swingteacherdesktop.controllers;
 
+import dev.dposadsky.java.swingteacherdesktop.commons.logger.LoggerFactory;
 import dev.dposadsky.java.swingteacherdesktop.dao.*;
 import dev.dposadsky.java.swingteacherdesktop.main.Checker;
 import dev.dposadsky.java.swingteacherdesktop.main.Factory;
@@ -41,7 +42,7 @@ public class MainFrameController {
         try {
             lessons = lessonDao.getLessonsByCategory(taskCategory);
         } catch (SQLException ex) {
-            System.out.println("Exception in getLessonByCategory in Controller: " + ex);
+            LoggerFactory.error(MainFrameController.class, ex.getMessage());
         }
         return lessons;
     }
@@ -53,7 +54,7 @@ public class MainFrameController {
         try {
             tasks = taskDao.getTasksByLesson(lesson);
         } catch (SQLException ex) {
-            System.out.println("Exception in getTasksByLesson in Controller: " + ex);
+            LoggerFactory.error(MainFrameController.class, ex.getMessage());
         }
         return tasks;
     }
@@ -65,7 +66,7 @@ public class MainFrameController {
         try {
             completedTask = completedTaskDao.getCompletedTaskByUserIdByTaskId(userId, taskId);
         } catch (SQLException ex) {
-            System.out.println("Exception in getCompletedTaskByUserId in Controller: " + ex);
+            LoggerFactory.error(MainFrameController.class, ex.getMessage());
         }
         return completedTask;
     }
@@ -77,7 +78,7 @@ public class MainFrameController {
         try {
             completedTasks = completedTaskDao.getCompletedTaskByUserId(id);
         } catch (SQLException ex) {
-            System.out.println("Exception in getCompletedTaskByUserId in Controller: " + ex);
+            LoggerFactory.error(MainFrameController.class, ex.getMessage());
         }
         return completedTasks;
     }
@@ -89,7 +90,7 @@ public class MainFrameController {
         try {
             completedTaskDao.addCompletedTask(completedTask);
         } catch (SQLException ex) {
-            System.out.println("Exception in getCompletedTaskByUserId in Controller: " + ex);
+            LoggerFactory.error(MainFrameController.class, ex.getMessage());
         }
     }
 
@@ -100,7 +101,7 @@ public class MainFrameController {
         try {
             documentation = documentationDao.getDocumentation(i);
         } catch (SQLException ex) {
-            System.out.println("Exception in getDocumentation in Controller: " + ex);
+            LoggerFactory.error(MainFrameController.class, ex.getMessage());
         }
         return documentation;
     }
@@ -125,8 +126,7 @@ public class MainFrameController {
         try {
             problems = FileUtils.isCompileFile(operators, imports);
         } catch (IOException | InstantiationException | IllegalAccessException ex) {
-            System.out.println("Error in ActionListener from lookButton: ");
-            ex.printStackTrace();
+            LoggerFactory.error(MainFrameController.class, ex.getMessage());
         }
         if (problems.isEmpty()) {
             try {
