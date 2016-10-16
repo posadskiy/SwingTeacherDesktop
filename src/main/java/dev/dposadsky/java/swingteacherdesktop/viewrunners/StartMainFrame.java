@@ -8,7 +8,7 @@ package dev.dposadsky.java.swingteacherdesktop.viewrunners;
 import dev.dposadsky.java.swingteacherdesktop.main.Factory;
 import dev.dposadsky.java.swingteacherdesktop.tables.User;
 import dev.dposadsky.java.swingteacherdesktop.utils.StringUtils;
-import dev.dposadsky.java.swingteacherdesktop.views.MainFrameView;
+import dev.dposadsky.java.swingteacherdesktop.views.swing.MainFrameView;
 
 public class StartMainFrame {
 

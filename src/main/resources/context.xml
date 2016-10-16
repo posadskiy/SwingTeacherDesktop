@@ -13,11 +13,11 @@
         
     </bean>-->
     
-    <bean id="mainFrame" class="dev.dposadsky.java.swingteacherdesktop.views.MainFrameView"> 
+    <bean id="mainFrame" class="dev.dposadsky.java.swingteacherdesktop.views.swing.MainFrameView">
         
     </bean>
     
-    <bean id="mainFrameController" class="dev.dposadsky.java.swingteacherdesktop.controllers.MainFrameController" init-method="startApplication">
+    <bean id="mainFrameController" class="dev.dposadsky.java.swingteacherdesktop.controllers.swing.MainFrameController" init-method="startApplication">
         
     </bean>           
 </beans>

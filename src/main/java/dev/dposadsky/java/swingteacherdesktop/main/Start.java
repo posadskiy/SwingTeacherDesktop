@@ -5,7 +5,7 @@
  */
 package dev.dposadsky.java.swingteacherdesktop.main;
 
-import dev.dposadsky.java.swingteacherdesktop.controllers.MainFrameController;
+import dev.dposadsky.java.swingteacherdesktop.controllers.swing.MainFrameController;
 import java.sql.SQLException;
 import javax.swing.SwingUtilities;
 import org.springframework.context.ApplicationContext;

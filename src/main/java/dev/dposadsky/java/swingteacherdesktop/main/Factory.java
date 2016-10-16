@@ -5,12 +5,12 @@
  */
 package dev.dposadsky.java.swingteacherdesktop.main;
 
-import dev.dposadsky.java.swingteacherdesktop.controllers.AuthPaneController;
-import dev.dposadsky.java.swingteacherdesktop.controllers.MainFrameController;
-import dev.dposadsky.java.swingteacherdesktop.controllers.PopupWindowsController;
-import dev.dposadsky.java.swingteacherdesktop.controllers.RegistrationPaneController;
-import dev.dposadsky.java.swingteacherdesktop.controllers.auth.AuthLoginService;
-import dev.dposadsky.java.swingteacherdesktop.controllers.auth.LoginListener;
+import dev.dposadsky.java.swingteacherdesktop.controllers.swing.AuthPaneController;
+import dev.dposadsky.java.swingteacherdesktop.controllers.swing.MainFrameController;
+import dev.dposadsky.java.swingteacherdesktop.controllers.swing.PopupWindowsController;
+import dev.dposadsky.java.swingteacherdesktop.controllers.swing.RegistrationPaneController;
+import dev.dposadsky.java.swingteacherdesktop.controllers.swing.auth.AuthLoginService;
+import dev.dposadsky.java.swingteacherdesktop.controllers.swing.auth.LoginListener;
 import dev.dposadsky.java.swingteacherdesktop.dao.CompletedTaskDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.DocumentationDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.ErrorDao;
@@ -19,21 +19,13 @@ import dev.dposadsky.java.swingteacherdesktop.dao.LessonDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.ShorthandDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.TaskDao;
 import dev.dposadsky.java.swingteacherdesktop.dao.UserDao;
-import dev.dposadsky.java.swingteacherdesktop.dao.impl.CompletedTaskDaoImpl;
-import dev.dposadsky.java.swingteacherdesktop.dao.impl.DocumentationDaoImpl;
-import dev.dposadsky.java.swingteacherdesktop.dao.impl.ErrorDaoImpl;
-import dev.dposadsky.java.swingteacherdesktop.dao.impl.KeywordDaoImpl;
-import dev.dposadsky.java.swingteacherdesktop.dao.impl.LessonDaoImpl;
-import dev.dposadsky.java.swingteacherdesktop.dao.impl.ShorthandDaoImpl;
-import dev.dposadsky.java.swingteacherdesktop.dao.impl.TaskDaoImpl;
-import dev.dposadsky.java.swingteacherdesktop.dao.impl.UserDaoImpl;
 import dev.dposadsky.java.swingteacherdesktop.dao.mock.*;
 import dev.dposadsky.java.swingteacherdesktop.email.SenderTLS;
 import dev.dposadsky.java.swingteacherdesktop.tables.User;
-import dev.dposadsky.java.swingteacherdesktop.views.AuthPane;
-import dev.dposadsky.java.swingteacherdesktop.views.MainFrameView;
-import dev.dposadsky.java.swingteacherdesktop.views.PopupWindowsView;
-import dev.dposadsky.java.swingteacherdesktop.views.RegistrationPane;
+import dev.dposadsky.java.swingteacherdesktop.views.swing.AuthPane;
+import dev.dposadsky.java.swingteacherdesktop.views.swing.MainFrameView;
+import dev.dposadsky.java.swingteacherdesktop.views.swing.PopupWindowsView;
+import dev.dposadsky.java.swingteacherdesktop.views.swing.RegistrationPane;
 
 /**
  *
